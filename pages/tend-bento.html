@@ -1,0 +1,398 @@
+<title>Tend Bento</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout concept: the page is itself a bento board. Centre stage is one live phone; tiles around it explain the habit design. */
+:root{
+  --bg:#ECEFEE; --surface:#FFFFFF; --ink:#101C25; --muted:#5E6E77; --line:#D9E0DF; --accent:#3547D9; --accent-soft:#E3E7FD;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif; --body:'DM Sans','Helvetica Neue',Arial,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0B1218;--surface:#15212B;--ink:#EAF0F0;--muted:#92A3AC;--line:#24343F;--accent:#9AA7FF;--accent-soft:#232D63;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1218;--surface:#15212B;--ink:#EAF0F0;--muted:#92A3AC;--line:#24343F;--accent:#9AA7FF;--accent-soft:#232D63;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;padding-inline:16px;padding-block:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:44px 70px;display:grid;gap:26px}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
+h1{font-size:clamp(2.3rem,6vw,4rem);font-weight:800}h2{font-size:1.5rem;font-weight:700}h3{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}.m{color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.board{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.bt{background:var(--surface);border-radius:26px;padding:22px;display:grid;gap:8px;align-content:start;min-width:0;border:1px solid var(--line)}
+.bt p{color:var(--muted);font-size:.93rem}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media(max-width:860px){.c4,.c5,.c6,.c7,.c8{grid-column:span 12}}
+.stage{display:grid;place-items:center;gap:14px;padding-block:26px;background:linear-gradient(160deg,#DDE3FA,#E6F1EC);border:0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .stage{background:linear-gradient(160deg,#1B2350,#10302A)}}
+:root[data-theme="dark"] .stage{background:linear-gradient(160deg,#1B2350,#10302A)}
+.seg{display:inline-flex;background:rgba(255,255,255,.7);border-radius:99px;padding:4px;gap:2px;font-size:.85rem;font-weight:700}
+.seg button{border:0;background:transparent;color:#34444D;padding:7px 14px;border-radius:99px;font:inherit;cursor:pointer;display:flex;gap:6px;align-items:center}
+.seg button[aria-pressed="true"]{background:#101C25;color:#fff}
+.seg svg{width:15px;height:15px}
+.hint{font-size:.82rem;color:#34444D;text-align:center}
+:root[data-theme="dark"] .hint{color:#C3D0D6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hint{color:#C3D0D6}}
+.big{font-family:var(--display);font-weight:800;font-size:2.6rem;line-height:1;letter-spacing:-.03em}
+.sw{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.sw div{border-radius:16px;padding:12px;min-height:84px;display:flex;flex-direction:column;justify-content:flex-end;font-family:var(--mono);font-size:.68rem}
+.sw b{font-family:var(--display);font-size:.95rem;letter-spacing:-.01em}
+.hooks{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.hooks li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.hooks i{width:34px;height:34px;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.hooks svg{width:17px;height:17px}
+.hooks b{display:block}
+.hooks span{color:var(--muted);font-size:.9rem}
+.phones{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;padding-block:10px}
+.phones figure{margin:0;display:grid;gap:10px;justify-items:center;max-width:100%}
+.phones figcaption{font-size:.86rem;color:var(--muted);max-width:300px;text-align:center}
+.phones figcaption b{display:block;color:var(--ink);font-family:var(--display);font-size:1rem}
+
+/* ===== the product ===== */
+.device{width:min(372px,100%);padding:8px;border-radius:50px;background:#0A1016;box-shadow:0 30px 60px -28px rgba(8,16,40,.55)}
+.app{--p-bg:#EEF1F0;--tile:#FFFFFF;--ink:#101C25;--mute:#66767F;--line:#E1E7E6;--blue:#3547D9;--blue-soft:#E3E7FD;--mint:#D9F0E6;--mint-ink:#16704D;--coral:#C8442F;--coral-soft:#FBE3DE;--hero:#101C25;--hero-ink:#FFFFFF;--hero-mute:#9FB0B9;--hero-line:rgba(255,255,255,.14);--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(16,28,37,.32);
+  position:relative;height:736px;border-radius:43px;overflow:hidden;background:var(--p-bg);color:var(--ink);font-size:13px;line-height:1.35;transition:background .5s,color .5s}
+.app[data-mode="night"]{--p-bg:#0B1218;--tile:#16212B;--ink:#EAF0F0;--mute:#8CA0AA;--line:#223340;--blue:#9AA7FF;--blue-soft:#222C63;--mint:#133428;--mint-ink:#6FDCAB;--coral:#F28B79;--coral-soft:#43211B;--hero:#2B3BC9;--hero-ink:#FFFFFF;--hero-mute:#C4CBFF;--hero-line:rgba(255,255,255,.2);--sh:0 1px 0 rgba(255,255,255,.04) inset,0 10px 24px -16px rgba(0,0,0,.6)}
+.status{position:absolute;top:0;left:0;right:0;height:44px;padding:14px 26px 0;display:flex;justify-content:space-between;font-weight:700;font-size:12px;z-index:5;pointer-events:none}
+.status::after{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:84px;height:24px;border-radius:14px;background:#0A1016}
+.scroll{position:absolute;inset:0;overflow-y:auto;padding:50px 12px 100px;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--tile);border-radius:24px;padding:14px;position:relative;min-width:0;box-shadow:var(--sh);display:grid;gap:4px;align-content:start;transition:background .5s,transform .15s}
+.tile.s2{grid-column:span 2}
+button.tile,.tile[data-act]{cursor:pointer;text-align:left;border:0;font:inherit;color:inherit}
+button.tile:active,.tile[data-act]:active{transform:scale(.975)}
+.tile.hero{background:var(--hero);color:var(--hero-ink);padding:16px;gap:6px}
+.tile.blue{background:var(--blue-soft)}.tile.mint{background:var(--mint);color:var(--mint-ink)}.tile.coral{background:var(--coral-soft);color:var(--coral)}
+.tile.dash{background:transparent;border:1.5px dashed var(--line);box-shadow:none}
+.k{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.hero .k{color:var(--hero-mute)}.mint .k{color:var(--mint-ink);opacity:.8}.coral .k{color:var(--coral)}
+.h{font-family:var(--display);font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.h1{font-size:24px}.h2{font-size:19px}.h3{font-size:15px}.num{font-size:34px;font-weight:800}
+.sub{color:var(--mute);font-size:11.5px}.hero .sub{color:var(--hero-mute)}.mint .sub{color:var(--mint-ink)}
+.row{display:flex;align-items:center;gap:10px}.sp{justify-content:space-between}
+.ic{width:20px;height:20px;flex:0 0 auto}.ic svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700;font-size:10.5px}
+.chip.g{background:var(--mint);color:var(--mint-ink)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-family:var(--display);font-weight:800}
+.stepbtn{all:unset;box-sizing:border-box;display:grid;grid-template-columns:28px 1fr auto;gap:11px;align-items:center;padding:10px 0;border-top:1px solid var(--hero-line);cursor:pointer;width:100%}
+.stepbtn:first-of-type{border-top:0}
+.stepbtn:focus-visible,.tab:focus-visible,.btn:focus-visible,button.tile:focus-visible,.opt:focus-visible,.pick:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.cb{width:26px;height:26px;border-radius:50%;border:1.8px solid var(--hero-mute);display:grid;place-items:center;transition:all .25s cubic-bezier(.3,1.6,.5,1);color:transparent}
+.cb svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.stepbtn[aria-pressed="true"] .cb{background:#fff;border-color:#fff;color:var(--hero);transform:scale(1.08)}
+.stepbtn b{display:block;font-size:13.5px;font-weight:700;transition:opacity .25s}
+.stepbtn[aria-pressed="true"] b{opacity:.55;text-decoration:line-through;text-decoration-thickness:1.5px}
+.stepbtn span{font-size:11px;color:var(--hero-mute)}
+.opt-tag{font-size:9.5px;font-weight:700;color:var(--hero-mute);border:1px solid var(--hero-line);border-radius:99px;padding:2px 7px}
+.btn{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:18px;background:#fff;color:var(--hero);font-weight:700;font-size:13.5px;cursor:pointer;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.dark{background:var(--ink);color:var(--p-bg)}.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bars{display:flex;gap:4px;align-items:flex-end;height:44px;margin-top:6px}
+.bars i{flex:1;border-radius:6px;background:var(--line);display:block;min-height:6px;transition:height .4s}
+.bars i.f{background:var(--blue)}.bars i.h2{background:var(--blue);opacity:.45}.bars i.today{outline:2px solid var(--ink);outline-offset:1px}
+.dl{display:flex;justify-content:space-between;font-size:9px;color:var(--mute);margin-top:3px;font-weight:700}
+.seg30{display:grid;grid-template-columns:repeat(15,1fr);gap:3px;margin-top:6px}
+.seg30 i{height:6px;border-radius:3px;background:var(--line);display:block}.seg30 i.on{background:var(--blue)}.seg30 i.new{background:var(--mint-ink);animation:pop .6s}
+@keyframes pop{from{transform:scaleY(3)}to{transform:none}}
+.tabs{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:5px;border-radius:99px;background:color-mix(in srgb,var(--tile) 82%,transparent);backdrop-filter:blur(14px);box-shadow:0 10px 30px -10px rgba(0,0,0,.4),0 0 0 1px var(--line);z-index:4}
+.tab{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:6px;padding:10px 13px;border-radius:99px;font-weight:700;font-size:12px;color:var(--mute);cursor:pointer;transition:all .25s}
+.tab svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tab span{display:none}.tab[aria-selected="true"]{background:var(--ink);color:var(--p-bg)}.tab[aria-selected="true"] span{display:inline}
+.opts{display:flex;gap:6px;margin-top:6px}
+.opt{all:unset;box-sizing:border-box;flex:1;text-align:center;padding:9px 4px;border-radius:14px;border:1.5px solid var(--line);font-weight:700;font-size:12px;cursor:pointer;transition:all .2s}
+.opt[aria-pressed="true"]{background:var(--ink);color:var(--p-bg);border-color:var(--ink)}
+.pick{all:unset;box-sizing:border-box;cursor:pointer;background:var(--tile);border-radius:22px;padding:13px;display:grid;gap:7px;box-shadow:var(--sh);border:2px solid transparent;transition:all .2s}
+.pick[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.pick .ic{color:var(--blue)}
+.pick b{font-size:13.5px}
+.scrim{position:absolute;inset:0;background:rgba(5,10,16,.45);opacity:0;pointer-events:none;transition:opacity .3s;z-index:6}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--tile);border-radius:30px 30px 0 0;padding:10px 18px 24px;display:grid;gap:9px;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.9,.3,1);z-index:7;box-shadow:0 -20px 40px -20px rgba(0,0,0,.4)}
+.sheet.on{transform:none}
+.grab{width:38px;height:4px;border-radius:2px;background:var(--line);justify-self:center;margin-bottom:6px}
+.brush{position:absolute;inset:0;background:#0B1218;color:#EAF0F0;z-index:8;padding:56px 22px 26px;display:grid;grid-template-rows:auto 1fr auto auto;gap:14px;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.9,.3,1)}
+.brush.on{transform:none}
+.bring{position:relative;width:216px;height:216px;margin:auto}
+.bring svg.r{width:100%;height:100%;transform:rotate(-90deg)}
+.bring .t{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-family:var(--display);font-size:46px;font-weight:800;letter-spacing:-.03em}
+.bring .t small{display:block;font-family:var(--body);font-size:11px;font-weight:500;color:#8CA0AA;letter-spacing:0}
+.quads{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.quads i{font-style:normal;padding:9px;border-radius:14px;background:#16212B;color:#8CA0AA;font-size:11.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center;transition:all .3s}
+.quads i.d{background:#133428;color:#6FDCAB}.quads i.n{background:#2B3BC9;color:#fff}
+.quads svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cue{background:#16212B;border-radius:20px;padding:13px;font-size:12.5px}
+.cue b{display:block;font-family:var(--display);font-size:15px;margin-bottom:2px}
+.xbtn{all:unset;position:absolute;top:52px;right:20px;width:34px;height:34px;border-radius:50%;background:#16212B;display:grid;place-items:center;cursor:pointer}
+.xbtn svg{width:16px;height:16px;fill:none;stroke:#EAF0F0;stroke-width:2.2;stroke-linecap:round}
+.map{width:100%;height:auto;display:block}
+.fade{animation:fin .35s ease both}
+@keyframes fin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+<header style="display:grid;gap:12px;max-width:44rem">
+  <span class="eyebrow">Tend · visual design mockup · bento direction</span>
+  <h1>A daily ritual that feels like opening something you like.</h1>
+  <p class="m" style="font-size:1.1rem">Every screen is a board of tiles. Each tile holds one idea, so the app is calm to scan, quick to use, and a little different every time you open it. The phone below is live: tap the steps, start brushing, switch to night.</p>
+</header>
+
+<div class="board">
+  <div class="bt stage c7" style="grid-row:span 3">
+    <div class="seg" role="group" aria-label="Time of day">
+      <button id="mMorning" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>Morning</button>
+      <button id="mNight" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/></svg>Night</button>
+    </div>
+    <div class="device"><div class="app" id="app" data-mode="night"></div></div>
+    <p class="hint">The app changes mood with the time of day. Scroll inside the phone; try all four tabs.</p>
+  </div>
+
+  <div class="bt c5">
+    <span class="eyebrow">Why people come back</span>
+    <h2>Built for the 2 minutes you give it, twice a day.</h2>
+    <ul class="hooks">
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></i><div><b>Satisfying completion</b><span>Steps fill, the ring closes, the hero tile settles into "Sleep well". The close of the day feels finished.</span></div></li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></i><div><b>Something new each night</b><span>Finishing the routine unlocks one of 30 short insights. A collection, not a score.</span></div></li>
+      <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7"/></svg></i><div><b>Forgiving by design</b><span>Weeks, partial credit, no streak to break. Missing a night costs nothing.</span></div></li>
+    </ul>
+  </div>
+
+  <div class="bt c5">
+    <span class="eyebrow">Design rules</span>
+    <div class="board" style="grid-template-columns:1fr 1fr;gap:8px">
+      <div style="grid-column:span 2"><h3>One idea per tile</h3><p>If a tile needs two sentences of explanation, split it.</p></div>
+      <div><h3>3 sizes only</h3><p>1x1, 2x1, 2x2. Rhythm comes from repeating them.</p></div>
+      <div><h3>One hero</h3><p>One high-contrast tile per screen, the next action.</p></div>
+    </div>
+  </div>
+
+  <div class="bt c5">
+    <span class="eyebrow">Colour and type</span>
+    <div class="sw">
+      <div style="background:#EEF1F0;color:#101C25"><b>Enamel</b>#EEF1F0</div>
+      <div style="background:#101C25;color:#fff"><b>Ink</b>#101C25</div>
+      <div style="background:#3547D9;color:#fff"><b>Blue</b>#3547D9</div>
+      <div style="background:#D9F0E6;color:#16704D"><b>Mint</b>#D9F0E6</div>
+      <div style="background:#FBE3DE;color:#C8442F"><b>Coral</b>#FBE3DE</div>
+      <div style="background:#0B1218;color:#EAF0F0"><b>Night</b>#0B1218</div>
+    </div>
+    <p style="margin-top:4px"><b style="font-family:var(--display)">Bricolage Grotesque</b> for headlines and numbers, <b>DM Sans</b> for everything you read.</p>
+  </div>
+</div>
+
+<div class="bt" style="padding-bottom:12px">
+  <span class="eyebrow">The set-up flow, same tiles</span>
+  <div class="phones">
+    <figure><div class="device"><div class="app" id="s1" data-mode="day"></div></div><figcaption><b>Tell us about your mouth</b>Tap tiles instead of filling a form. Each pick is optional.</figcaption></figure>
+    <figure><div class="device"><div class="app" id="s2" data-mode="day"></div></div><figcaption><b>Your plan, at a glance</b>Four tiles, seven minutes, and a tile for what we left out.</figcaption></figure>
+    <figure><div class="device"><div class="app" id="s3" data-mode="day"></div></div><figcaption><b>When we pause</b>A warm, clear stop. No routine is better than the wrong one.</figcaption></figure>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+var IC={
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',
+moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/>',
+brush:'<path d="M3 21l7-7"/><path d="M11 13l-1-1 7-7a2.1 2.1 0 0 1 3 3l-7 7z"/><path d="M5 17l2 2"/>',
+between:'<path d="M6 4v16M18 4v16"/><path d="M10 8h4M10 12h4M10 16h4"/>',
+drop:'<path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/>',
+check:'<path d="M5 12l5 5 9-10"/>',
+home:'<path d="M4 11l8-7 8 7v9H4z"/>',
+list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
+chart:'<path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/>',
+tooth:'<path d="M7 4C4 4 3 7 4 10s1 10 4 10c2 0 1-5 4-5s2 5 4 5c3 0 3-7 4-10s0-6-3-6c-2 0-3 1-5 1S9 4 7 4z"/>',
+arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+spark:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',
+x:'<path d="M6 6l12 12M18 6L6 18"/>',
+shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 8v5M12 16h.01"/>',
+cal:'<path d="M4 7h16v13H4zM4 11h16M8 3v4M16 3v4"/>',
+lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+share:'<path d="M12 15V4M8 8l4-4 4 4M5 13v7h14v-7"/>',
+play:'<path d="M7 4l13 8-13 8z"/>',pause:'<path d="M8 5v14M16 5v14"/>',
+face:'<path d="M5 9c0-4 14-4 14 0v2c0 5-3 9-7 9s-7-4-7-9z"/>',
+plate:'<path d="M3 12h18M6 8v8M12 8v8M18 8v8"/>',
+brace:'<rect x="3" y="8" width="18" height="8" rx="3"/><path d="M8 8v8M16 8v8"/>',
+none:'<circle cx="12" cy="12" r="8"/><path d="M8 12h8"/>'
+};
+function ic(n,c){return '<span class="ic"'+(c?' style="'+c+'"':'')+'><svg viewBox="0 0 24 24">'+IC[n]+'</svg></span>'}
+function ring(p,size,sw,col,track){var r=(size-sw)/2,c=2*Math.PI*r;return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" style="transform:rotate(-90deg);display:block"><circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+track+'" stroke-width="'+sw+'"/><circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+c*(1-p)+'" style="transition:stroke-dashoffset .6s cubic-bezier(.3,1,.4,1)"/></svg>'}
+
+var STEPS={
+night:[{id:'between',t:'Clean between teeth',s:'Interdental brush 0.8 mm · 2 min',req:1},{id:'brush',t:'Brush, soft and slow',s:'2 min · fluoride paste · spit, don’t rinse',req:1},{id:'flosser',t:'Water flosser',s:'Thursday · around the implant',req:0}],
+morning:[{id:'brush',t:'Brush, soft and slow',s:'2 min · fluoride paste · spit, don’t rinse',req:1},{id:'look',t:'Glance at your gums',s:'10 seconds · any change?',req:0}]
+};
+var WHY={
+brush:{k:'Why this · brushing',h:'Soft, slow and angled at the gum protects both gums and your implant.',p:'Hard scrubbing wears gums and can expose the edge of a restoration. A soft brush at 45°, in small circles, removes plaque without the damage.',ev:'Strong evidence',rule:'BR-001, BR-002',rev:'A. Rahman, periodontist · Oct 2026'},
+between:{k:'Why this · between teeth',h:'Plaque collects where a brush can’t reach, and implants don’t forgive it.',p:'Gums around an implant can become inflamed with little pain. Cleaning between teeth and at the implant every day is the main thing you control.',ev:'Good evidence',rule:'IM-001 v3',rev:'A. Rahman, periodontist · Oct 2026'},
+flosser:{k:'Why this · water flosser',h:'A helpful extra around the implant, never a replacement.',p:'It flushes debris from around restorations. It does not remove sticky plaque like an interdental brush, so it sits on top of your routine.',ev:'Good evidence',rule:'WF-001',rev:'L. Moreau, prosthodontist · Sep 2026'},
+look:{k:'Why this · gum glance',h:'Ten seconds that catches change early.',p:'Redness, puffiness or a gap that wasn’t there is worth noting for your next visit. Nothing to fix, just to notice.',ev:'Expert opinion',rule:'GM-001',rev:'A. Rahman, periodontist · Oct 2026'},
+left:{k:'Left out on purpose',h:'Fewer steps you can keep beat more steps you won’t.',p:'Tongue scraping has a modest effect for you, whitening and oil pulling are not supported by good evidence, and charcoal products can be abrasive. We’ll bring one back if your profile changes.',ev:'Reviewed',rule:'TN-001, MW-001',rev:'A. Rahman, periodontist · Oct 2026'},
+budget:{k:'Time budget',h:'Eight minutes a day is the ceiling, not the goal.',p:'We rank everything that applies to you and stop when the day is full. If you add a step, we tell you what it replaces.',ev:'Product rule',rule:'engine',rev:'Tend design team'}
+};
+var INSIGHT=['Spitting, not rinsing, keeps fluoride on your teeth for hours.','Bleeding gums usually mean cleaning more gently and more often, not less.','The last thing you do at night matters most: saliva slows while you sleep.'];
+
+var S={mode:'night',tab:'today',done:{'night:between':1},sheet:null,gum:'less',insights:11,unlocked:{},brush:null};
+var app=document.getElementById('app'),timer=null;
+function isDone(id){return !!S.done[S.mode+':'+id]}
+function steps(){return STEPS[S.mode]}
+function req(){return steps().filter(function(s){return s.req})}
+function left(){return req().filter(function(s){return !isDone(s.id)}).length}
+function allDone(){return left()===0}
+function pct(){return (req().length-left())/req().length}
+function mode(){return S.mode==='night'}
+
+function bars(){
+  var v=[1,1,.5,1,.5,1,0],todayI=mode()?3:3;
+  var h='<div class="bars">';
+  ['M','T','W','T','F','S','S'].forEach(function(d,i){
+    var cls=i===todayI?'f today':(v[i]===1?'f':v[i]===.5?'h2':'');
+    var ht=i===todayI?(allDone()?44:(pct()>0?28:14)):(v[i]===1?44:v[i]===.5?26:8);
+    if(i>todayI){cls='';ht=8}
+    h+='<i class="'+cls+'" style="height:'+ht+'px"></i>'});
+  h+='</div><div class="dl">'+['M','T','W','T','F','S','S'].map(function(d){return '<span>'+d+'</span>'}).join('')+'</div>';return h}
+
+function greetTile(){
+  return '<div class="tile s2" style="background:transparent;box-shadow:none;padding:4px 4px 2px"><div class="row sp"><div><div class="k">Thursday · 15 Oct</div><div class="h h1" style="margin-top:3px">'+(mode()?'Good evening, Priya':'Good morning, Priya')+'</div></div><div class="avatar">P</div></div></div>'}
+
+function heroTile(){
+  var st=steps(),n=left(),done=allDone(),h='<div class="tile hero s2 fade">';
+  h+='<div class="row sp"><div><div class="k">'+(mode()?'Tonight · about 6 min':'This morning · about 2 min')+'</div><div class="h h1" style="margin-top:4px">'+(done?(mode()?'Done. Sleep well.':'Done. Have a good one.'):(n===1?'One step left':n+' steps today'))+'</div></div>'
+   +'<div style="position:relative;width:54px;height:54px;flex:0 0 auto">'+ring(pct(),54,6,'#fff','rgba(255,255,255,.2)')+'<div style="position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:16px">'+(req().length-n)+'/'+req().length+'</div></div></div>';
+  h+='<div style="margin-top:6px">';
+  st.forEach(function(s){
+    var d=isDone(s.id);
+    h+='<button class="stepbtn" data-act="toggle" data-id="'+s.id+'" aria-pressed="'+d+'"><span class="cb"><svg viewBox="0 0 24 24">'+IC.check+'</svg></span><span><b>'+s.t+'</b><span>'+s.s+'</span></span>'+(s.req?'<span></span>':'<span class="opt-tag">optional</span>')+'</button>'});
+  h+='</div>';
+  if(!done&&!isDone('brush')) h+='<button class="btn" data-act="brush" style="margin-top:6px">'+'<svg viewBox="0 0 24 24">'+IC.play+'</svg>Start guided brushing</button>';
+  else if(done) h+='<div class="sub" style="margin-top:4px">Next: tomorrow '+(mode()?'7:30 · 1 step':'9:30 pm · 2 steps')+'</div>';
+  return h+'</div>'}
+
+function insightTile(){
+  var done=allDone(),n=S.insights+(S.unlocked[S.mode]?1:0),h;
+  var seg='<div class="seg30">';for(var i=0;i<30;i++)seg+='<i class="'+(i<S.insights?'on':(i===S.insights&&S.unlocked[S.mode]?'new':''))+'"></i>';seg+='</div>';
+  if(done){
+    h='<button class="tile s2 blue fade" data-act="why" data-id="insight"><div class="row sp"><div class="k" style="color:var(--blue)">Insight '+(S.insights+1)+' of 30 · unlocked</div>'+ic('spark','color:var(--blue)')+'</div><div class="h h3" style="margin-top:2px">'+INSIGHT[S.mode==='night'?0:2]+'</div>'+seg+'</button>';
+  }else{
+    h='<div class="tile s2 dash"><div class="row sp"><div class="k">Insight '+(S.insights+1)+' of 30</div>'+ic('lock','color:var(--mute)')+'</div><div class="h h3" style="color:var(--mute)">Finish '+(mode()?'tonight’s':'this morning’s')+' routine to unlock</div>'+seg+'</div>';
+  }
+  return h}
+
+function today(){
+  var h='<div class="bento">'+greetTile()+heroTile();
+  h+='<div class="tile"><div class="k">This week</div>'+bars()+'<div class="sub" style="margin-top:5px">6 of 7 days</div></div>';
+  h+='<div class="tile mint"><div class="row sp"><div class="k">Gums</div>'+ic('face')+'</div><div class="h h2" style="margin-top:6px">Calmer</div><div class="sub">Bleeding: rarely, down from sometimes</div></div>';
+  h+='<div class="tile blue"><div class="row sp"><div class="k" style="color:var(--blue)">'+(mode()?'Tonight’s focus':'Today’s focus')+'</div>'+ic('tooth','color:var(--blue)')+'</div><div class="h h3" style="margin-top:4px;color:var(--ink)">Lower right implant</div><div class="sub">Add 20 seconds at the gumline</div></div>';
+  h+='<button class="tile" data-act="tab" data-id="progress"><div class="k">Check-up in</div><div class="h num">24</div><div class="sub">days · share a summary</div></button>';
+  h+=insightTile()+'</div>';return h}
+
+function routine(){
+  return '<div class="bento"><div class="tile s2" style="background:transparent;box-shadow:none;padding:4px"><div class="k">Version 1 · built from</div><div class="h h1" style="margin:3px 0 7px">Your routine</div><div class="row" style="gap:5px;flex-wrap:wrap"><span class="chip">Implant, lower right</span><span class="chip g">Gums bleed sometimes</span></div></div>'
+  +'<button class="tile hero" data-act="why" data-id="brush" style="min-height:130px">'+ic('sun')+'<div style="margin-top:auto"><div class="h h3">Brush</div><div class="sub">Morning · 2 min</div></div></button>'
+  +'<button class="tile hero" data-act="why" data-id="brush" style="min-height:130px;background:#2B3BC9">'+ic('moon')+'<div style="margin-top:auto"><div class="h h3">Brush</div><div class="sub">Night · 2 min</div></div></button>'
+  +'<button class="tile s2 blue" data-act="why" data-id="between"><div class="row sp"><div style="color:var(--blue)">'+ic('between')+'</div><span class="chip">Daily · night</span></div><div class="h h2" style="margin-top:8px">Clean between teeth</div><div class="sub">Interdental brush, 0.8 mm. Size to be confirmed by your dentist.</div><div class="row" style="gap:6px;margin-top:6px"><span class="chip g">Strong rule · IM-001</span></div></button>'
+  +'<button class="tile" data-act="why" data-id="flosser">'+ic('drop','color:var(--blue)')+'<div class="h h3" style="margin-top:14px">Water flosser</div><div class="sub">3x a week · optional</div></button>'
+  +'<button class="tile dash" data-act="why" data-id="left">'+ic('x','color:var(--mute)')+'<div class="h h3" style="margin-top:14px">Left out</div><div class="sub">Tongue scraper, whitening, oil pulling</div></button>'
+  +'<button class="tile s2" data-act="why" data-id="budget"><div class="row sp"><div class="k">Daily time</div><div class="h h3">7 of 8 min</div></div><div style="height:8px;border-radius:4px;background:var(--line);margin-top:6px;overflow:hidden"><i style="display:block;height:100%;width:88%;background:var(--blue);border-radius:4px"></i></div></button></div>'}
+
+function progress(){
+  var g={less:'Fewer bleeds than last month. This is the number your dentist cares about.',same:'No change yet. Give it two weeks of daily cleaning between teeth.',more:'Worth mentioning. If it lasts two weeks, we’ll help you book a visit.'};
+  var wk=[40,55,60,48,78,82],b='<div class="bars" style="height:70px">';wk.forEach(function(v,i){b+='<i class="'+(i===5?'f today':'h2')+'" style="height:'+v*.85+'px"></i>'});b+='</div><div class="dl"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>Now</span></div>';
+  var seg='<div class="seg30">';for(var i=0;i<30;i++)seg+='<i class="'+(i<S.insights?'on':'')+'"></i>';seg+='</div>';
+  return '<div class="bento"><div class="tile s2" style="background:transparent;box-shadow:none;padding:4px"><div class="k">Last 6 weeks</div><div class="h h1" style="margin-top:3px">Your gums are the number that matters</div></div>'
+  +'<div class="tile s2"><div class="row sp"><div class="k">Do your gums bleed when you clean?</div></div><div class="opts" role="group" aria-label="Gum check">'
+  +['less','same','more'].map(function(o){return '<button class="opt" data-act="gum" data-id="'+o+'" aria-pressed="'+(S.gum===o)+'">'+{less:'Less',same:'Same',more:'More'}[o]+'</button>'}).join('')
+  +'</div><div class="sub fade" style="margin-top:8px" key="'+S.gum+'">'+g[S.gum]+'</div></div>'
+  +'<div class="tile s2"><div class="row sp"><div class="k">Between-teeth cleaning</div><span class="chip g">5 of 6 weeks on target</span></div>'+b+'</div>'
+  +'<div class="tile"><div class="k">Weeks active</div><div class="h num">6</div><div class="sub">no streak to lose</div></div>'
+  +'<div class="tile blue"><div class="k" style="color:var(--blue)">Insights</div><div class="h num" style="color:var(--ink)">'+S.insights+'<span style="font-size:15px;color:var(--mute)">/30</span></div></div>'
+  +'<div class="tile coral s2"><div class="row sp"><div><div class="k">Dentist visit</div><div class="h h2" style="margin:3px 0">In 24 days</div><div class="sub" style="color:var(--coral)">A one-page summary is ready.</div></div></div><button class="btn dark" data-act="share" style="margin-top:8px">'+'<svg viewBox="0 0 24 24">'+IC.share+'</svg><span id="shareTxt">Share summary</span></button></div></div>'}
+
+function teeth(){
+  var s='<svg class="map" viewBox="0 0 300 190" role="img" aria-label="Tooth map, implant lower right">';
+  function arch(up){var out='';for(var i=0;i<14;i++){var t=(176-i*(172/13))*Math.PI/180,rx=112,ry=58,cx=150,cy=up?92:98;var x=cx+rx*Math.cos(t),y=up?cy-ry*Math.sin(t):cy+ry*Math.sin(t);var ang=(up?-1:1)*(t*180/Math.PI-90);var w=(i<3||i>10)?20:(i<5||i>8)?15:13,h=(i<3||i>10)?18:19;var imp=!up&&i===11,cls=imp?'#3547D9':'var(--p-bg)';var stroke=imp?'#3547D9':'var(--mute)';
+    out+='<rect x="'+(x-w/2)+'" y="'+(y-h/2)+'" width="'+w+'" height="'+h+'" rx="6" fill="'+cls+'" stroke="'+stroke+'" stroke-width="1.5" transform="rotate('+ang+' '+x+' '+y+')"/>';
+    if(imp)out+='<circle cx="'+x+'" cy="'+y+'" r="15" fill="none" stroke="#3547D9" stroke-opacity=".35" stroke-width="2"/>'}return out}
+  return s+arch(1)+arch(0)+'</svg>'}
+function mouth(){
+  return '<div class="bento"><div class="tile s2" style="background:transparent;box-shadow:none;padding:4px"><div class="k">Profile · 80% complete</div><div class="h h1" style="margin-top:3px">My mouth</div></div>'
+  +'<div class="tile s2"><div class="row sp"><div class="k">Map</div><span class="chip">1 implant</span></div>'+teeth()+'<div class="sub" style="text-align:center">Lower right · placed March 2026</div></div>'
+  +'<div class="tile"><div class="k">Profile</div><div style="position:relative;width:64px;height:64px;margin:6px 0">'+ring(.8,64,7,'var(--blue)','var(--line)')+'<div style="position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:16px">80%</div></div><div class="sub">Add dry mouth and diabetes for sharper advice</div></div>'
+  +'<div class="tile mint"><div class="k">Dentist</div><div class="h h3" style="margin:4px 0">Not confirmed yet</div><div class="sub">Share code <b style="font-family:var(--mono)">TND-4F9K</b> to unlock sizing advice</div></div>'
+  +'<div class="tile s2"><div class="k">Ask at your next visit</div><div class="row" style="margin-top:6px;gap:9px;align-items:flex-start"><span style="color:var(--blue)">'+ic('between')+'</span><div><b>Which interdental brush size fits the implant?</b></div></div><div class="row" style="margin-top:6px;gap:9px;align-items:flex-start"><span style="color:var(--blue)">'+ic('drop')+'</span><div><b>Is a water flosser right for me?</b></div></div></div></div>'}
+
+function tabs(){
+  var T=[['today','home','Today'],['routine','list','Routine'],['progress','chart','Progress'],['mouth','tooth','Mouth']];
+  return '<div class="tabs" role="tablist">'+T.map(function(t){return '<button class="tab" role="tab" data-act="tab" data-id="'+t[0]+'" aria-selected="'+(S.tab===t[0])+'" aria-label="'+t[2]+'"><svg viewBox="0 0 24 24">'+IC[t[1]]+'</svg><span>'+t[2]+'</span></button>'}).join('')+'</div>'}
+
+function sheetHtml(){
+  var w=WHY[S.sheet]||{},ins=S.sheet==='insight';
+  if(ins)w={k:'Insight '+(S.insights+1)+' of 30',h:INSIGHT[S.mode==='night'?0:2],p:'Small facts like this are why the routine works. You’ll collect one each time you finish a routine.',ev:'Strong evidence',rule:'IN-0'+(S.insights+1),rev:'Reviewed by the clinical panel'};
+  if(!S.sheet)return '';
+  return '<div class="grab"></div><div class="k">'+w.k+'</div><div class="h h2">'+w.h+'</div><div class="sub" style="font-size:12.5px">'+w.p+'</div><div class="row" style="gap:6px;flex-wrap:wrap"><span class="chip g">'+w.ev+'</span><span class="chip" style="font-family:var(--mono)">'+w.rule+'</span></div><div class="sub">'+w.rev+'</div><button class="btn dark" data-act="close" style="margin-top:4px">Got it</button>'}
+
+function render(){
+  var sc=app.querySelector('.scroll'),top=sc?sc.scrollTop:0;
+  var body={today:today,routine:routine,progress:progress,mouth:mouth}[S.tab]();
+  app.setAttribute('data-mode',S.mode);
+  app.innerHTML='<div class="status"><span>9:41</span><span>5G ●●●</span></div><div class="scroll">'+body+'</div>'+tabs()+'<div class="scrim'+(S.sheet?' on':'')+'" data-act="close"></div><div class="sheet'+(S.sheet?' on':'')+'" id="sheet">'+sheetHtml()+'</div><div class="brush'+(S.brush?' on':'')+'" id="brush"></div>';
+  if(S.brush)drawBrush();
+  app.querySelector('.scroll').scrollTop=top;
+}
+function drawBrush(){
+  var b=S.brush,el=document.getElementById('brush');if(!el)return;
+  var t=Math.min(120,b.t),rem=120-t,q=Math.min(3,Math.floor(t/30)),names=['Upper right','Upper left','Lower left','Lower right'];
+  var cues=['Tilt the brush 45° toward the gum. Tiny circles, light pressure.','Same angle, inside surfaces. Let the bristles do the work.','Almost there. Chewing surfaces next, no hard scrubbing.','Lower right is your implant. Add extra time at the gumline.'];
+  el.innerHTML='<button class="xbtn" data-act="stopbrush" aria-label="Close"><svg viewBox="0 0 24 24">'+IC.x+'</svg></button><div class="k" style="color:#8CA0AA">Guided brushing · demo speed 6×</div>'
+   +'<div class="bring">'+ring(t/120,216,12,b.fin?'#6FDCAB':'#9AA7FF','#1E2D39')+'<div class="t"><span>'+(b.fin?'Done':Math.floor(rem/60)+':'+('0'+rem%60).slice(-2))+'<small>'+(b.fin?'nicely done':'remaining')+'</small></span></div></div>'
+   +'<div class="quads">'+names.map(function(n,i){return '<i class="'+(b.fin||i<q?'d':i===q?'n':'')+'">'+n+((b.fin||i<q)?'<svg viewBox="0 0 24 24">'+IC.check+'</svg>':'')+'</i>'}).join('')+'</div>'
+   +'<div class="cue"><b>'+(b.fin?'Spit, don’t rinse':names[q])+'</b>'+(b.fin?'Leave the fluoride on your teeth for the night.':cues[q])+'</div>';
+}
+function startBrush(){
+  S.brush={t:0,fin:false};render();
+  clearInterval(timer);timer=setInterval(function(){
+    if(!S.brush){clearInterval(timer);return}
+    S.brush.t+=6;
+    if(S.brush.t>=120){S.brush.t=120;S.brush.fin=true;S.done[S.mode+':brush']=1;clearInterval(timer);drawBrush();setTimeout(function(){S.brush=null;finish();render()},1500);return}
+    drawBrush()},1000)}
+function finish(){if(allDone())S.unlocked[S.mode]=1}
+function reset(m){S.mode=m;S.tab='today';S.sheet=null;S.brush=null;clearInterval(timer);
+  document.getElementById('mMorning').setAttribute('aria-pressed',m==='morning');document.getElementById('mNight').setAttribute('aria-pressed',m==='night');render()}
+app.addEventListener('click',function(e){
+  var a=e.target.closest('[data-act]');if(!a||!app.contains(a))return;var act=a.dataset.act,id=a.dataset.id;
+  if(act==='tab'){S.tab=id;S.sheet=null;render();app.querySelector('.scroll').scrollTop=0}
+  else if(act==='toggle'){var k=S.mode+':'+id;S.done[k]=S.done[k]?0:1;finish();render()}
+  else if(act==='brush')startBrush();
+  else if(act==='stopbrush'){S.brush=null;clearInterval(timer);render()}
+  else if(act==='why'){S.sheet=id;render()}
+  else if(act==='close'){S.sheet=null;render()}
+  else if(act==='gum'){S.gum=id;render()}
+  else if(act==='share'){var t=document.getElementById('shareTxt');if(t)t.textContent='Summary ready · copy link soon'}
+});
+document.getElementById('mMorning').onclick=function(){reset('morning')};
+document.getElementById('mNight').onclick=function(){reset('night')};
+render();
+
+/* ===== setup-flow screens ===== */
+function shell(id,html,tabbar){var el=document.getElementById(id);el.innerHTML='<div class="status"><span>9:41</span><span>5G ●●●</span></div><div class="scroll" style="padding-bottom:24px;display:flex;flex-direction:column;gap:10px">'+html+'</div>';return el}
+var sel={implant:1};
+function intake(){
+  var items=[['implant','Implant','tooth'],['crown','Crown','face'],['bridge','Bridge','plate'],['braces','Braces or aligners','brace'],['dent','Dentures','plate'],['none','None of these','none']];
+  var el=shell('s1','<div class="k">Step 2 of 5 · About your mouth</div><div class="h h1">What’s in your mouth that isn’t a natural tooth?</div><div class="sub">Select all that apply. Not sure? Skip it, you can ask your dentist later.</div><div class="bento" id="pg">'+items.map(function(i){return '<button class="pick" data-k="'+i[0]+'" aria-pressed="'+!!sel[i[0]]+'">'+ic(i[1+1])+'<b>'+i[1]+'</b></button>'}).join('')+'</div><div style="margin-top:auto"><button class="btn dark" id="ct">Continue</button></div>');
+  el.querySelector('#pg').onclick=function(e){var b=e.target.closest('.pick');if(!b)return;var k=b.dataset.k;if(k==='none'){sel={none:1}}else{delete sel.none;sel[k]=sel[k]?0:1}
+    el.querySelectorAll('.pick').forEach(function(p){p.setAttribute('aria-pressed',!!sel[p.dataset.k])})}}
+intake();
+shell('s2','<div class="k">Your plan is ready</div><div class="h h1">Four things. About 7 minutes a day.</div><div class="row" style="gap:5px;flex-wrap:wrap"><span class="chip">Implant, lower right</span><span class="chip g">Gums bleed sometimes</span></div>'
+ +'<div class="bento"><div class="tile hero s2"><div class="k">Every day</div><div class="h" style="font-size:40px;font-weight:800;margin-top:2px">7 min</div><div class="sub">8 min is your ceiling. You’re under it.</div></div>'
+ +'<div class="tile">'+ic('sun','color:var(--blue)')+'<div class="h h3" style="margin-top:12px">Brush</div><div class="sub">Morning · 2 min</div></div>'
+ +'<div class="tile">'+ic('moon','color:var(--blue)')+'<div class="h h3" style="margin-top:12px">Brush</div><div class="sub">Night · 2 min</div></div>'
+ +'<div class="tile blue">'+ic('between','color:var(--blue)')+'<div class="h h3" style="margin-top:12px">Between teeth</div><div class="sub">Night · 2 min</div></div>'
+ +'<div class="tile">'+ic('drop','color:var(--blue)')+'<div class="h h3" style="margin-top:12px">Water flosser</div><div class="sub">3x a week</div></div>'
+ +'<div class="tile s2 dash"><div class="k">Left out on purpose</div><div class="sub" style="margin-top:3px">Tongue scraper · whitening · oil pulling</div></div></div>'
+ +'<div style="margin-top:auto"><button class="btn dark">Start tonight</button></div>');
+shell('s3','<div class="k">Step 4 of 5 · Quick safety check</div><div class="h h1" style="margin-top:2px">Let’s pause here</div>'
+ +'<div class="tile coral" style="padding:18px;gap:8px;margin-top:6px"><div style="width:44px;height:44px;border-radius:16px;background:var(--tile);display:grid;place-items:center">'+ic('shield')+'</div><div class="h h2" style="margin-top:6px">A swelling near a tooth needs a dentist, not a routine.</div><div class="sub" style="color:var(--coral)">Cleaning won’t fix an infection, and the wrong advice could delay care. Please book a visit soon.</div></div>'
+ +'<div class="tile" style="gap:6px"><div class="k">If you also have</div><div class="row" style="align-items:flex-start;gap:9px"><span style="color:var(--coral)">'+ic('x')+'</span><b>Fever, swelling spreading to your face, or trouble swallowing or breathing: get urgent medical care now.</b></div></div>'
+ +'<div style="margin-top:auto;display:grid;gap:8px"><button class="btn dark">Find a dentist near me</button><button class="btn ghost">Change my answers</button></div>');
+})();
+</script>

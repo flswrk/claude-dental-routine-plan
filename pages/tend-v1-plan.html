@@ -1,0 +1,209 @@
+<title>Tend v1 Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single working-document column; tables and code are the main content. */
+:root{--bg:#F3F5F4;--surface:#FFFFFF;--ink:#12202A;--muted:#566670;--line:#DCE3E2;--accent:#3547D9;--accent-soft:#E4E8FC;--gum:#D8523F;--gum-soft:#FBE6E2;--ok:#1E8A62;--ok-soft:#DDF1E8;--warn:#9A6A00;--warn-soft:#FBEFCF;--code:#0F1B24;--codeink:#D6E4E8;
+--display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;--body:'DM Sans','Helvetica Neue',Arial,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0E161C;--surface:#16222B;--ink:#E8EEEE;--muted:#9BAAB2;--line:#26353F;--accent:#8C9BFF;--accent-soft:#222C5C;--gum:#F08574;--gum-soft:#4A2620;--ok:#5FD3A2;--ok-soft:#173A2C;--warn:#F0C25E;--warn-soft:#3F3212;--code:#0A1217;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E161C;--surface:#16222B;--ink:#E8EEEE;--muted:#9BAAB2;--line:#26353F;--accent:#8C9BFF;--accent-soft:#222C5C;--gum:#F08574;--gum-soft:#4A2620;--ok:#5FD3A2;--ok-soft:#173A2C;--warn:#F0C25E;--warn-soft:#3F3212;--code:#0A1217;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.55;font-size:16px;margin:0;padding-inline:16px;padding-block:0}
+.wrap{max-width:900px;margin:0 auto;padding-block:48px 70px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800}h2{font-size:clamp(1.6rem,3.6vw,2.1rem)}h3{font-size:1.1rem}
+p{margin:0}.m{color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+section{display:grid;gap:16px;border-top:1px solid var(--line);padding-top:36px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:8px;min-width:0;align-content:start}
+.card p,.card li{color:var(--muted);font-size:.94rem}
+.g{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.sc{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.id{font-family:var(--mono);font-size:.78rem;white-space:nowrap}
+.t{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.t.ok{background:var(--ok-soft);color:var(--ok)}.t.w{background:var(--warn-soft);color:var(--warn)}.t.r{background:var(--gum-soft);color:var(--gum)}
+pre{margin:0;background:var(--code);color:var(--codeink);border-radius:12px;padding:16px;font-family:var(--mono);font-size:.76rem;line-height:1.6;overflow-x:auto}
+ul{margin:0;padding-left:1.1em;display:grid;gap:5px}
+.wk{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:baseline}
+.wk b{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+.flow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.86rem}
+.flow span{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.flow i{font-style:normal;color:var(--muted)}
+.q{padding:12px 0;border-bottom:1px solid var(--line)}.q b{display:block}
+</style>
+<div class="wrap">
+<header style="display:grid;gap:14px">
+<span class="eyebrow">Phase 2 · Direction C approved</span>
+<h1>Tend v1: rule set and prototype plan</h1>
+<p class="m" style="max-width:42rem">Two deliverables to agree before building: how the rules are structured and governed, and a clickable prototype that tests the idea with real people before the engine is real. All clinical content is a draft for dentist review.</p>
+</header>
+
+<section>
+<h2>1. Rule set structure</h2>
+<p class="m">One rule is one small, reviewable decision. Rules are YAML files in a git repo, validated by a schema, and compiled into one versioned bundle that the app and the clinician console both read.</p>
+<div class="g">
+<div class="card"><h3>Repo layout</h3><pre style="font-size:.72rem">rules/
+  _schema/rule.schema.json
+  safety/      RF-*  (red flags)
+  base/        BR-* IC-* MW-*
+  restorations/ IM-* CR-* BG-* DN-*
+  ortho/       OR-*
+  gums/        GM-* PD-*
+  risk/        FR-* DM-* CV-*
+  systemic/    SY-*
+  life-stage/  AG-*
+  _vocab/      profile fields, steps, tools
+  _tests/      golden profiles, invariants
+  releases/    bundle-2026.11.0.json</pre></div>
+<div class="card"><h3>Pipeline order</h3>
+<div class="flow"><span>Profile</span><i>→</i><span>1 Safety gate</span><i>→</i><span>2 Match</span><i>→</i><span>3 Supersede</span><i>→</i><span>4 Constrain</span><i>→</i><span>5 Budget</span><i>→</i><span>6 Explain</span></div>
+<ul><li><b>Safety gate</b>: red flags halt everything; nothing else is shown.</li><li><b>Supersede</b>: specific rule replaces a general one.</li><li><b>Constrain</b>: timing and incompatibility rules (e.g. fluoride rinse 30 min from brushing).</li><li><b>Budget</b>: keep top priorities within ~8 minutes a day; trimmed items listed as "left out".</li></ul></div>
+</div>
+
+<h3>Rule schema</h3>
+<pre><span style="color:#7E95A0"># every field is required unless marked optional</span>
+id: IM-001                    # category prefix + number, never reused
+version: 3                    # integer, bumped on any content change
+status: approved              # draft | in_review | approved | retired
+when:                         # boolean over profile fields only
+  all:
+    - has_restoration: implant
+    - not: { flag: red_flag_any }
+action:
+  step: interdental_brush     # key from the step vocabulary
+  slot: evening               # morning | evening | both | weekly | plan | ask
+  priority: high              # critical | high | normal | optional
+  supersedes: [IC-001]
+  requires_confirmed: false   # true = only for dentist-confirmed profiles
+copy:                         # reading level checked, localized per region
+  title: "Clean between teeth with an interdental brush at the implant"
+  detail: "..."
+  why: "..."
+  ask_dentist: "Ask which brush size fits."   # optional
+evidence: { grade: B, type: guideline, sources: [EFP-S3-2023] }
+regions: [US, UK, EU]
+safety_class: standard        # standard | elevated | high_risk (2 reviewers)
+reviewed_by: [{ name: "A. Rahman, DDS", date: 2026-10-02 }]
+review_expires: 2027-10-02
+escalate_if: [bleeding_persists_14d, loose_implant]   # optional
+</pre>
+
+<div class="g">
+<div class="card"><h3>Evidence grades</h3><ul><li><b>A</b> systematic review or strong guideline consensus</li><li><b>B</b> guideline recommendation, limited trials</li><li><b>C</b> expert opinion or weak evidence; shown as "optional"</li><li><b>Ask</b> never instructs; routes to the dentist</li></ul></div>
+<div class="card"><h3>Governance</h3><ul><li><b>standard</b>: 1 dentist reviewer</li><li><b>elevated / high_risk</b> (implants, medication-related, systemic): 2 reviewers incl. relevant specialist</li><li>Review expires after 12 months; expired rules fail the build</li><li>Rules cannot be edited, only versioned; every release has a changelog</li></ul></div>
+<div class="card"><h3>Hard guardrails (tests)</h3><ul><li>No rule may recommend a prescription product (chlorhexidine, 5000 ppm paste) except as "ask your dentist"</li><li>No output may contain a diagnosis phrase</li><li>Red flag always yields exactly one result: stop screen</li><li>Same profile and bundle always give identical output</li></ul></div>
+</div>
+</section>
+
+<section>
+<h2>2. v1 rule catalog (about 40 rules)</h2>
+<p class="m">Draft scope for dentist review. "Pri" is priority, "Ev" is a proposed evidence grade, to be verified against sources by the reviewers.</p>
+<div class="sc"><table>
+<thead><tr><th>Group</th><th>ID</th><th>Fires when</th><th>Says (short)</th><th>Pri</th><th>Ev</th></tr></thead>
+<tbody>
+<tr><td rowspan="5"><b>Safety</b><br><span class="m">stop, no routine</span></td><td class="id">RF-001</td><td>Swelling, pus, loose tooth or implant</td><td>See a dentist soon</td><td><span class="t r">crit</span></td><td>Cons.</td></tr>
+<tr><td class="id">RF-002</td><td>Ulcer or lump &gt; 3 weeks</td><td>Book an exam</td><td><span class="t r">crit</span></td><td>Cons.</td></tr>
+<tr><td class="id">RF-003</td><td>Pain that wakes you</td><td>See a dentist soon</td><td><span class="t r">crit</span></td><td>Cons.</td></tr>
+<tr><td class="id">RF-004</td><td>Facial swelling with fever, trouble swallowing/breathing</td><td>Urgent medical care now</td><td><span class="t r">crit</span></td><td>Cons.</td></tr>
+<tr><td class="id">RF-005</td><td>Bleeding that does not stop, or recent oral surgery &lt; 14d</td><td>Follow surgeon's instructions; routine paused</td><td><span class="t r">crit</span></td><td>Cons.</td></tr>
+<tr><td rowspan="6"><b>Base</b></td><td class="id">BR-001</td><td>Everyone</td><td>2 min, twice daily, fluoride paste, spit don't rinse</td><td><span class="t">high</span></td><td>A</td></tr>
+<tr><td class="id">BR-002</td><td>Bleeding, implant, bridge, receding gums</td><td>Soft brush, light pressure, angle to gumline</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td class="id">BR-003</td><td>Dexterity limits, age 65+</td><td>Powered brush or thicker handle</td><td><span class="t">norm</span></td><td>C</td></tr>
+<tr><td class="id">IC-001</td><td>Everyone</td><td>Clean between teeth daily (floss or brush)</td><td><span class="t">high</span></td><td>A/B</td></tr>
+<tr><td class="id">IC-002</td><td>Interdental gaps wide</td><td>Prefer interdental brushes over floss</td><td><span class="t">norm</span></td><td>B</td></tr>
+<tr><td class="id">TN-001</td><td>Breath concern</td><td>Gentle tongue cleaning, optional</td><td><span class="t w">opt</span></td><td>C</td></tr>
+<tr><td rowspan="6"><b>Restorations</b></td><td class="id">IM-001</td><td>Implant</td><td>Interdental brush at the implant daily</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td class="id">IM-002</td><td>Implant</td><td>Non-abrasive paste; no metal tools on implant surface</td><td><span class="t">norm</span></td><td>B</td></tr>
+<tr><td class="id">IM-003</td><td>Implant + bleeding 14d</td><td>Book review at your dentist</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td class="id">CR-001</td><td>Crown</td><td>Clean the crown margin at the gumline</td><td><span class="t">norm</span></td><td>C</td></tr>
+<tr><td class="id">BG-001</td><td>Bridge</td><td>Super floss or threader under the pontic</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td class="id">DN-001</td><td>Dentures</td><td>Remove nightly, clean dentures and gums, soak per type</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td rowspan="4"><b>Ortho</b></td><td class="id">OR-001</td><td>Braces</td><td>Single-tuft and interdental brush at brackets</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td class="id">OR-002</td><td>Braces</td><td>Brush after every meal when possible</td><td><span class="t">norm</span></td><td>C</td></tr>
+<tr><td class="id">OR-003</td><td>Clear aligners</td><td>Brush before reinserting; clean aligners daily; water only when eating/drinking</td><td><span class="t">high</span></td><td>C</td></tr>
+<tr><td class="id">OR-004</td><td>Retainer</td><td>Clean daily; ask about fixed retainer cleaning</td><td><span class="t">norm</span></td><td>C</td></tr>
+<tr><td rowspan="4"><b>Gums</b></td><td class="id">GM-001</td><td>Bleeding when cleaning</td><td>Keep cleaning; recheck in 14 days</td><td><span class="t">high</span></td><td>Cons.</td></tr>
+<tr><td class="id">GM-002</td><td>Bleeding persists 14d</td><td>Book a dentist visit</td><td><span class="t">high</span></td><td>Cons.</td></tr>
+<tr><td class="id">PD-001</td><td>Past gum disease treatment</td><td>Daily interdental cleaning is the priority; keep maintenance visits</td><td><span class="t">high</span></td><td>A</td></tr>
+<tr><td class="id">PD-002</td><td>Recession or sensitivity</td><td>Gentle technique; ask about desensitizing paste</td><td><span class="t">norm</span></td><td>C</td></tr>
+<tr><td rowspan="6"><b>Risk</b></td><td class="id">FR-001</td><td>Cavities in last 3 yrs, braces, dry mouth</td><td>Fluoride rinse away from brushing</td><td><span class="t">norm</span></td><td>B</td></tr>
+<tr><td class="id">FR-002</td><td>High cavity risk or exposed roots</td><td>Ask about prescription-strength fluoride</td><td><span class="t w">ask</span></td><td>B</td></tr>
+<tr><td class="id">DM-001</td><td>Dry mouth</td><td>Alcohol-free products; sip water; ask about saliva substitutes</td><td><span class="t">norm</span></td><td>C</td></tr>
+<tr><td class="id">DM-002</td><td>Dry mouth + sugar snacking</td><td>Limit frequency of sugary snacks and drinks</td><td><span class="t">norm</span></td><td>A</td></tr>
+<tr><td class="id">CV-001</td><td>Frequent sugary/acidic drinks</td><td>Confine to mealtimes; wait before brushing after acid</td><td><span class="t">norm</span></td><td>B</td></tr>
+<tr><td class="id">MW-001</td><td>Any, if user uses mouthwash</td><td>Optional; alcohol-free; not a replacement; no chlorhexidine unless prescribed</td><td><span class="t w">opt</span></td><td>C</td></tr>
+<tr><td rowspan="4"><b>Add-ons &amp; systemic</b></td><td class="id">WF-001</td><td>Braces, implant, bridge</td><td>Water flosser as an add-on</td><td><span class="t w">opt</span></td><td>B</td></tr>
+<tr><td class="id">SY-001</td><td>Diabetes</td><td>Check-up every 3 to 6 months; tell your dentist</td><td><span class="t">high</span></td><td>B</td></tr>
+<tr><td class="id">SY-002</td><td>Smoking or vaping</td><td>Raises gum risk; tell your dentist; cessation resources</td><td><span class="t">norm</span></td><td>A</td></tr>
+<tr><td class="id">SY-003</td><td>Pregnancy</td><td>Gums bleed more; keep routine; tell your dentist</td><td><span class="t">norm</span></td><td>B</td></tr>
+</tbody></table></div>
+<p class="m" style="font-size:.9rem">Open for reviewers: medication-related issues (blood thinners, bisphosphonates), heart conditions, orthodontic sub-types and whitening are deliberately out of v1. Where a profile answer is "not sure", the engine falls back to the general rule and adds an "ask your dentist" note.</p>
+
+<h3>Profile fields (what the intake collects)</h3>
+<div class="g">
+<div class="card"><h3>Required (60 seconds)</h3><ul><li>Age band (18-34, 35-49, 50-64, 65+)</li><li>Restorations: implant, crown, bridge, braces, aligners, retainer, dentures</li><li>Gum bleeding when cleaning (never, sometimes, often)</li><li>Red-flag checklist</li></ul></div>
+<div class="card"><h3>Optional (improves the plan)</h3><ul><li>Gum disease history; cavities in last 3 years</li><li>Dry mouth, diabetes, smoking, pregnancy</li><li>Current tools (brush type, floss, rinse)</li><li>Region; next dentist visit date</li></ul></div>
+<div class="card"><h3>Dentist-confirmable</h3><ul><li>Dentist adds: interdental brush sizes, fluoride strength, special instructions</li><li>Profile gets a "confirmed by" badge and a code</li><li>Unlocks <code>requires_confirmed</code> rules</li></ul></div>
+</div>
+
+<h3>Testing and tooling</h3>
+<div class="g">
+<div class="card"><h3>Golden profiles</h3><p>About 60 hand-written profiles with the expected output, each signed by a dentist. Any bundle change that alters a golden result needs approval.</p></div>
+<div class="card"><h3>Property tests</h3><p>Generate thousands of random profiles. Assert: red flag stops all, no empty routine, no step duplicated, time budget respected, no prescription step shown as an instruction.</p></div>
+<div class="card"><h3>Clinician console</h3><p>Read-only first (browse rules, trace a profile, see tests). Editing and sign-off in git review for v1, a UI in v1.5.</p></div>
+</div>
+</section>
+
+<section>
+<h2>3. Clickable prototype plan</h2>
+<p class="m"><b>Goal:</b> learn whether people complete the intake honestly, trust a four-step plan, understand the "why", and say they would keep doing it, before building the engine. The prototype is a responsive web app on the real design language with a thin real engine.</p>
+<div class="g">
+<div class="card"><h3>What is real</h3><ul><li>Intake, safety gate, routine reveal, Today, Why sheet, weekly check-in, dentist summary</li><li>A small client-side engine with 15 to 20 draft rules from the catalog (the live demo from phase 1, extended)</li><li>Local storage so a participant can return a day later</li></ul></div>
+<div class="card"><h3>What is faked</h3><ul><li>No accounts, no backend, no real push reminders (simulated notification screen)</li><li>Guided brushing is a timer without sensors</li><li>Dentist confirmation is a pre-baked "confirmed" variant</li></ul></div>
+<div class="card"><h3>What it is not</h3><ul><li>Not a launch candidate: content is unreviewed, so label it "research prototype"</li><li>Not collecting health data beyond local storage and a consented session recording</li></ul></div>
+</div>
+
+<h3>Flows to build</h3>
+<div class="sc"><table><thead><tr><th>Flow</th><th>Screens</th><th>Tests</th></tr></thead><tbody>
+<tr><td><b>F1 First run</b></td><td>Welcome, About you, Restorations, Gums and health, Safety check, Building plan, Routine reveal</td><td>Time to complete, skipped fields, comprehension of "left out"</td></tr>
+<tr><td><b>F2 Safety stop</b></td><td>Safety check, stop screen, "how to find a dentist"</td><td>Does the stop feel respectful, not alarming? Do people know what to do?</td></tr>
+<tr><td><b>F3 Why</b></td><td>Why sheet from any step; evidence label; ask-your-dentist note</td><td>Do people read it, does it raise or lower trust?</td></tr>
+<tr><td><b>F4 Daily use</b></td><td>Today, mark step done, guided brushing, week strip, missed-night return</td><td>Is "partial credit" understood? Does a miss feel safe?</td></tr>
+<tr><td><b>F5 Check-in</b></td><td>Weekly gum question, progress view, "bleeding persists" nudge</td><td>Would they answer honestly? Does it prompt a visit?</td></tr>
+<tr><td><b>F6 Dentist loop</b></td><td>Share summary, "confirmed by dentist" profile variant</td><td>Would they show it to their dentist? What would a dentist want?</td></tr>
+</tbody></table></div>
+
+<h3>Research plan</h3>
+<div class="g">
+<div class="card"><h3>Participants (12 total)</h3><ul><li>4 with an implant, crown or bridge</li><li>4 with braces or aligners (2 are parents of teens)</li><li>2 with past gum disease or diabetes</li><li>2 healthy adults as a contrast</li></ul></div>
+<div class="card"><h3>Dentist review (3 to 5)</h3><ul><li>Walk through sample plans for 6 profiles</li><li>Mark each step: agree, change, unsafe</li><li>Ask what they would want from a patient summary</li></ul></div>
+<div class="card"><h3>Success signals</h3><ul><li>≥ 10 of 12 finish intake in under 5 min</li><li>≥ 9 of 12 can say why their top step matters</li><li>≥ 8 of 12 say they'd follow it for a month</li><li>Zero dentist ratings of "unsafe" on core rules</li></ul></div>
+</div>
+
+<h3>Timeline (about 6 weeks)</h3>
+<div class="card"><div class="wk">
+<b>Wk 1</b><span>Recruit dentist advisors and participants; finalize profile fields and step vocabulary; rule schema and validator</span>
+<b>Wk 2</b><span>Dentists review the 20 prototype rules; write copy; design the remaining screens and the research script</span>
+<b>Wk 3 to 4</b><span>Build the responsive prototype and engine; internal run-through with 3 golden profiles</span>
+<b>Wk 5</b><span>12 participant sessions (30 min), 3 to 5 dentist reviews; one-week return check with a diary</span>
+<b>Wk 6</b><span>Synthesis, revised scope, go or no-go on building the v1 app and the full rule set</span>
+</div></div>
+
+<h3>Suggested stack for the prototype</h3>
+<div class="card"><p>Static React app (Vite) with the engine as a plain TypeScript package that reads the compiled rule bundle, so the same code moves into the real app. YAML rules and schema validation with a small script; Vitest for golden and property tests; deploy to any static host. No server.</p></div>
+</section>
+
+<section>
+<h2>4. Decisions to unblock the next step</h2>
+<div class="card">
+<div class="q"><b>1. Market for the prototype</b><span class="m">Pick one region (US, UK or EU) so fluoride and guideline sources are consistent.</span></div>
+<div class="q"><b>2. Dentist advisors</b><span class="m">Do you have access to a periodontist, a prosthodontist and an orthodontist, or should we plan recruitment?</span></div>
+<div class="q"><b>3. Prototype participants</b><span class="m">Can you source the 12 participants, or should the plan include a recruitment panel?</span></div>
+<div class="q"><b>4. Build scope for the prototype</b><span class="m">Static research prototype (recommended), or go straight to a real app shell with accounts?</span></div>
+<div class="q" style="border:0"><b>5. Name</b><span class="m">"Tend" is a placeholder; a trademark and domain check is needed before it appears in front of participants.</span></div>
+</div>
+</section>
+</div>

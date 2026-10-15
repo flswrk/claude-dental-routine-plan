@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Why this</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0;font-family:'DM Sans',Arial,sans-serif}
+.app{--bg:#EEF1F0;--tile:#FFFFFF;--ink:#101C25;--mute:#5E6E77;--line:#DDE4E3;--blue:#3547D9;--blue-soft:#E3E7FD;--mint:#D9F0E6;--mint-ink:#16704D;--hero:#101C25;--r:24px}
+.app.night{--bg:#0B1218;--tile:#16212B;--ink:#EAF0F0;--mute:#8CA0AA;--line:#223340;--blue:#9AA7FF;--blue-soft:#222C63;--mint:#133428;--mint-ink:#6FDCAB;--hero:#2B3BC9}
+.app.r16{--r:16px}.app.r32{--r:32px}
+.app{box-sizing:border-box;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.35;position:relative;overflow:hidden}
+.k{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.h{font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;background:var(--mint);color:var(--mint-ink);font-weight:700;font-size:11px}
+/* Palette v2: Headspace-inspired. */
+.app{--bg:#F9F4F2;--tile:#FFFFFF;--ink:#2D2C2B;--mute:#68625D;--line:#EBDFD9;--blue:#0061EF;--blue-soft:#E3EDFD;--mint:#FFF0B3;--mint-ink:#6B4F00;--hero:#FF7A1A}
+.app.night{--bg:#16132B;--tile:#221E3F;--ink:#F6F1EE;--mute:#B1A9C9;--line:#352F5C;--blue:#7FB0FF;--blue-soft:#1E3566;--mint:#4A3D0B;--mint-ink:#FFD84D;--hero:#FF8A2B}
+/* Palette v3 (supersedes v2). */
+.app{--bg:#FFFFFF;--tile:#F9F4F2;--ink:#2D2C2B;--mute:#63605D;--line:#E9DDD7;--blue:#0061EF;--blue-soft:#E1ECFD;--mint:#FFE1C7;--mint-ink:#7A3200;--hero:#FFCE00}
+.app.night{--bg:#1B1740;--tile:#2B2560;--ink:#FFFFFF;--mute:#C2BBE6;--line:#40398A;--blue:#8DB9FF;--blue-soft:#2A3F7E;--mint:#5B3417;--mint-ink:#FFC08A;--hero:#FFCE00}
+.h{font-family:'DM Sans',Arial,sans-serif;font-weight:700;letter-spacing:-.02em}
+.k{font-family:'DM Sans',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em}
+</style>
+</helmet>
+<div class="app {{modeClass}}" style="width: 390px; height: 844px">
+
+<div style="padding: 62px 14px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; opacity: .9">
+<div style="grid-column: span 2; padding: 0 4px"><div class="k">Version 1</div><div class="h" style="font-size: 32px; margin-top: 6px">Your routine</div></div>
+<div style="background: var(--hero); border-radius: var(--r); height: 150px"></div>
+<div style="background: var(--hero); border-radius: var(--r); height: 150px; filter: brightness(1.12)"></div>
+<div style="grid-column: span 2; background: var(--blue-soft); border-radius: var(--r); height: 150px"></div>
+<div style="background: var(--tile); border-radius: var(--r); height: 150px"></div>
+<div style="border: 1.5px dashed var(--line); border-radius: var(--r); height: 150px"></div>
+</div>
+
+<div style="position: absolute; inset: 0; background: rgba(5, 10, 16, .5)"></div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 0; background: var(--tile); border-radius: 32px 32px 0 0; padding: 12px 22px 36px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 -20px 40px -20px rgba(0, 0, 0, .4)">
+<div style="width: 40px; height: 5px; border-radius: 3px; background: var(--line); align-self: center; margin-bottom: 6px"></div>
+<div class="k">Why this · between teeth</div>
+<div class="h" style="font-size: 26px">Plaque collects where a brush can't reach, and implants don't forgive it.</div>
+<div style="font-size: 15px; color: var(--mute); line-height: 1.5">Gums around an implant can become inflamed with little pain. Cleaning between teeth and at the implant every day is the main thing you control.</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center"><span class="chip">Good evidence</span><span class="chip" style="background: var(--blue-soft); color: var(--blue); font-family: 'JetBrains Mono', monospace">IM-001 v3</span></div>
+<div style="border-top: 1px solid var(--line); padding-top: 12px; font-size: 12px; color: var(--mute)">Reviewed by A. Rahman, periodontist · Oct 2026<br>Sources: EFP S3 guideline, AAP</div>
+<button style="min-height: 52px; border: 0; border-radius: 20px; background: var(--ink); color: var(--bg); font: 700 16px 'DM Sans', Arial, sans-serif; cursor: pointer">Got it</button>
+<button style="min-height: 48px; border: 1.5px solid var(--line); border-radius: 20px; background: transparent; color: var(--ink); font: 700 15px 'DM Sans', Arial, sans-serif; cursor: pointer">Ask my dentist about sizing</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"night":{"editor":"boolean","default":false},"radius":{"editor":"enum","default":"24","options":["16","24","32"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+const night = this.props.night ?? false;
+const r = this.props.radius ?? '24';
+return { modeClass: (night ? 'night' : 'day') + ' r' + r };
+}
+}
+</script>
+</body>
+</html>

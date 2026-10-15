@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Palette samples</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0;font-family:'DM Sans',Arial,sans-serif}
+.pal{--r:26px;box-sizing:border-box;width:340px;display:flex;flex-direction:column;gap:12px}
+.pal.p1{--bg:#FFFFFF;--tile:#F2EEEA;--ink:#0F0F0F;--mute:#5B5B5B;--line:#DDD6CE;--hero:#6784FE;--hero-ink:#0F0F0F;--accent:#6784FE;--soft:#E4E9FF;--soft-ink:#1D2F8A;--alert:#D93421}
+.pal.p2{--bg:#FFFFFF;--tile:#F3F3F1;--ink:#282828;--mute:#5E5E5E;--line:#E2E2DE;--hero:#FBCF00;--hero-ink:#282828;--accent:#08C225;--soft:#DDF6E1;--soft-ink:#0A6A1C;--alert:#D93421}
+.pal.p3{--bg:#F7F1E8;--tile:#FFFFFF;--ink:#1D1B18;--mute:#4A4741;--line:#E6DDCF;--hero:#27455C;--hero-ink:#FFFFFF;--accent:#2A72DE;--soft:#DCE8FB;--soft-ink:#173F82;--alert:#B3261E}
+.pal.p4{--bg:#F5F8F8;--tile:#FFFFFF;--ink:#1B2A33;--mute:#53636D;--line:#DDE6E8;--hero:#00B0B9;--hero-ink:#00282B;--accent:#00B0B9;--soft:#D6F3F5;--soft-ink:#055B61;--alert:#C7352B}
+.pal.p5{--bg:#FFFFFF;--tile:#F9F4F2;--ink:#2D2C2B;--mute:#63605D;--line:#E9DDD7;--hero:#FFCE00;--hero-ink:#2D2C2B;--accent:#0061EF;--soft:#E1ECFD;--soft-ink:#0A3E93;--alert:#A1124F}
+.pal.p6{--bg:#F8F9FA;--tile:#FFFFFF;--ink:#202124;--mute:#5F6368;--line:#DADCE0;--hero:#0B57D0;--hero-ink:#FFFFFF;--accent:#1A73E8;--soft:#D3E3FD;--soft-ink:#0842A0;--alert:#B3261E}
+.scr{background:var(--bg);color:var(--ink);border-radius:36px;padding:26px 16px 20px;height:640px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+.t{background:var(--tile);border-radius:var(--r);padding:16px;min-width:0}
+.k{font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.h{font-weight:700;letter-spacing:-.02em;line-height:1.08}
+.cap{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:11px;line-height:1.6;color:#555}
+.sw{display:flex;gap:6px}
+.sw i{width:34px;height:34px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+</style>
+</helmet>
+<div style="width: 2240px; height: 900px; padding: 40px 40px 0; box-sizing: border-box; background: #ECECEC; display: flex; gap: 24px; align-items: flex-start">
+<sc-for list="{{pals}}" as="p" hint-placeholder-count="5">
+<div class="pal {{p.cls}}">
+<div>
+<div style="font-weight: 700; font-size: 20px; color: #111">{{p.name}}</div>
+<div class="cap">{{p.source}}</div>
+</div>
+<div class="scr">
+<div style="padding: 0 4px"><div class="k">Thursday · 15 Oct</div><div class="h" style="font-size: 26px; margin-top: 4px">Good evening, Priya</div></div>
+<div class="t" style="background: var(--hero); color: var(--hero-ink); padding: 18px">
+<div class="k" style="color: var(--hero-ink); opacity: .75">Tonight · about 6 min</div>
+<div class="h" style="font-size: 28px; margin: 6px 0 10px">One step left</div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid rgba(0,0,0,.2); font-weight: 700; opacity: .65"><span style="width: 22px; height: 22px; border-radius: 50%; background: var(--hero-ink); display: block"></span>Clean between teeth</div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid rgba(0,0,0,.2); font-weight: 700"><span style="width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--hero-ink); box-sizing: border-box; display: block"></span>Brush, soft and slow</div>
+<button style="margin-top: 8px; width: 100%; min-height: 46px; border: 0; border-radius: 16px; background: var(--ink); color: var(--bg); font: 700 15px 'DM Sans', Arial, sans-serif; cursor: pointer">Start guided brushing</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div class="t"><div class="k">This week</div>
+<div style="display: flex; gap: 4px; align-items: flex-end; height: 42px; margin-top: 8px"><span style="flex: 1; height: 42px; border-radius: 5px; background: var(--accent)"></span><span style="flex: 1; height: 42px; border-radius: 5px; background: var(--accent)"></span><span style="flex: 1; height: 24px; border-radius: 5px; background: var(--accent); opacity: .5"></span><span style="flex: 1; height: 34px; border-radius: 5px; background: var(--accent)"></span><span style="flex: 1; height: 8px; border-radius: 5px; background: var(--line)"></span></div></div>
+<div class="t" style="background: var(--soft); color: var(--soft-ink)"><div class="k" style="color: var(--soft-ink)">Gums</div><div class="h" style="font-size: 26px; margin-top: 8px">Calmer</div></div>
+<div class="t"><div class="k">Check-up in</div><div class="h" style="font-size: 40px; margin-top: 2px">24</div></div>
+<div class="t" style="background: transparent; border: 1.5px dashed var(--line)"><div class="k" style="color: var(--alert)">Heads up</div><div style="font-weight: 700; margin-top: 4px; font-size: 14px">Mention bleeding at your visit</div></div>
+</div>
+</div>
+<div class="sw"><i style="background: var(--bg)"></i><i style="background: var(--tile)"></i><i style="background: var(--ink)"></i><i style="background: var(--hero)"></i><i style="background: var(--accent)"></i><i style="background: var(--soft)"></i><i style="background: var(--alert)"></i></div>
+<div class="cap">{{p.hexes}}</div>
+</div>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2240,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+pals: [
+{ cls: 'p1', name: 'Withings-style', source: 'Sampled from withings.com', hexes: 'ground #FFFFFF · card #F2EEEA · ink #0F0F0F · periwinkle #6784FE · alert #D93421' },
+{ cls: 'p2', name: 'Ente-style', source: 'Sampled from ente.com', hexes: 'ground #FFFFFF · ink #282828 · yellow #FBCF00 · green #08C225 (tints are mine)' },
+{ cls: 'p3', name: 'Oura-style', source: 'Sampled from ouraring.com', hexes: 'ground #F7F1E8 · text #4A4741 · navy #27455C · blue #2A72DE' },
+{ cls: 'p4', name: 'Fitbit-style', source: 'Teal recalled from the app, not sampled', hexes: 'teal #00B0B9 · ink #1B2A33 · ground #F5F8F8 (tints are mine)' },
+{ cls: 'p5', name: 'Headspace-style', source: 'Sampled from headspace.com', hexes: 'ground #FFFFFF · blush #F9F4F2 · yellow #FFCE00 · blue #0061EF' },
+{ cls: 'p6', name: 'Google Health-style', source: 'Sampled from health.google and store.google.com', hexes: 'ground #F8F9FA · ink #202124 · blue #1A73E8 / #0B57D0 · tonal #D3E3FD · error #B3261E (error is Material default)' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

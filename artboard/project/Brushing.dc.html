@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Guided brushing</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0;font-family:'DM Sans',Arial,sans-serif}
+.app{--bg:#EEF1F0;--tile:#FFFFFF;--ink:#101C25;--mute:#5E6E77;--line:#DDE4E3;--blue:#3547D9;--blue-soft:#E3E7FD;--mint:#D9F0E6;--mint-ink:#16704D;--ring:#3547D9;--active:#3547D9;--active-ink:#FFFFFF;--r:24px}
+.app.night{--bg:#0B1218;--tile:#16212B;--ink:#EAF0F0;--mute:#8CA0AA;--line:#223340;--blue:#9AA7FF;--blue-soft:#222C63;--mint:#133428;--mint-ink:#6FDCAB;--ring:#9AA7FF;--active:#2B3BC9}
+.app.r16{--r:16px}.app.r32{--r:32px}
+.app{box-sizing:border-box;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.35;position:relative;overflow:hidden}
+.k{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.h{font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.q{display:flex;justify-content:space-between;align-items:center;min-height:44px;box-sizing:border-box;padding:0 14px;border-radius:calc(var(--r) - 8px);background:var(--tile);color:var(--mute);font-weight:700;font-size:13px}
+.q.d{background:var(--mint);color:var(--mint-ink)}
+.q.n{background:var(--active);color:var(--active-ink)}
+/* Palette v2: Headspace-inspired. */
+.app{--bg:#F9F4F2;--tile:#FFFFFF;--ink:#2D2C2B;--mute:#68625D;--line:#EBDFD9;--blue:#0061EF;--blue-soft:#E3EDFD;--mint:#FFF0B3;--mint-ink:#6B4F00;--ring:#FF7A1A;--active:#0061EF;--active-ink:#FFFFFF}
+.app.night{--bg:#16132B;--tile:#221E3F;--ink:#F6F1EE;--mute:#B1A9C9;--line:#352F5C;--blue:#7FB0FF;--blue-soft:#1E3566;--mint:#4A3D0B;--mint-ink:#FFD84D;--ring:#FF8A2B;--active:#0061EF;--active-ink:#FFFFFF}
+/* Palette v3 (supersedes v2). */
+.app{--bg:#FFFFFF;--tile:#F9F4F2;--ink:#2D2C2B;--mute:#63605D;--line:#E9DDD7;--blue:#0061EF;--blue-soft:#E1ECFD;--mint:#FFE1C7;--mint-ink:#7A3200;--ring:#FF7A1A;--active:#0061EF;--active-ink:#FFFFFF}
+.app.night{--bg:#1B1740;--tile:#2B2560;--ink:#FFFFFF;--mute:#C2BBE6;--line:#40398A;--blue:#8DB9FF;--blue-soft:#2A3F7E;--mint:#5B3417;--mint-ink:#FFC08A;--ring:#FFCE00;--active:#0061EF;--active-ink:#FFFFFF}
+.h{font-family:'DM Sans',Arial,sans-serif;font-weight:700;letter-spacing:-.02em}
+.k{font-family:'DM Sans',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em}
+</style>
+</helmet>
+<div class="app {{modeClass}}" style="width: 390px; height: 844px; padding: 64px 22px 34px; display: flex; flex-direction: column; gap: 16px">
+
+<div class="row" style="display: flex; justify-content: space-between; align-items: center">
+<div class="k">Guided brushing · night</div>
+<button aria-label="Close" style="width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--tile); color: var(--ink); display: grid; place-items: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
+
+<div style="position: relative; width: 250px; height: 250px; margin: 8px auto">
+<svg width="250" height="250" viewBox="0 0 250 250" style="transform: rotate(-90deg); display: block" aria-hidden="true"><circle cx="125" cy="125" r="112" fill="none" stroke="var(--line)" stroke-width="14"/><circle cx="125" cy="125" r="112" fill="none" stroke="var(--ring)" stroke-width="14" stroke-linecap="round" stroke-dasharray="703.7" stroke-dashoffset="316.7"/></svg>
+<div style="position: absolute; inset: 0; display: grid; place-content: center; text-align: center">
+<div class="h" style="font-size: 62px; font-weight: 800">1:06</div>
+<div style="font-size: 13px; color: var(--mute)">remaining</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div class="q d">Upper right <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div>
+<div class="q d">Upper left <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></div>
+<div class="q n">Lower left</div>
+<div class="q">Lower right</div>
+</div>
+
+<div style="background: var(--tile); border-radius: var(--r); padding: 16px">
+<div class="h" style="font-size: 18px">Lower left, then the implant</div>
+<div style="font-size: 13px; color: var(--mute); margin-top: 4px">Tilt the brush 45° toward the gum. Tiny circles, light pressure. Next quarter is your implant: add 20 seconds at the gumline.</div>
+</div>
+
+<button style="margin-top: auto; min-height: 52px; border: 0; border-radius: 20px; background: var(--ink); color: var(--bg); font: 700 16px 'DM Sans', Arial, sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>Pause</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"night":{"editor":"boolean","default":true},"radius":{"editor":"enum","default":"24","options":["16","24","32"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+const night = this.props.night ?? true;
+const r = this.props.radius ?? '24';
+return { modeClass: (night ? 'night' : 'day') + ' r' + r };
+}
+}
+</script>
+</body>
+</html>

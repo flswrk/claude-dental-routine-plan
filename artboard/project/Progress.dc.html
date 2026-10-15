@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Progress</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0;font-family:'DM Sans',Arial,sans-serif}
+.app{--bg:#EEF1F0;--tile:#FFFFFF;--ink:#101C25;--mute:#5E6E77;--line:#DDE4E3;--blue:#3547D9;--blue-soft:#E3E7FD;--mint:#D9F0E6;--mint-ink:#16704D;--coral:#B93A26;--coral-soft:#FBE3DE;--hero:#101C25;--hero-ink:#FFFFFF;--hero-mute:#A8B8C0;--hero-line:rgba(255,255,255,.16);--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(16,28,37,.32);--r:24px}
+.app.night{--bg:#0B1218;--tile:#16212B;--ink:#EAF0F0;--mute:#8CA0AA;--line:#223340;--blue:#9AA7FF;--blue-soft:#222C63;--mint:#133428;--mint-ink:#6FDCAB;--coral:#F28B79;--coral-soft:#43211B;--hero:#2B3BC9;--hero-ink:#FFFFFF;--hero-mute:#C9CFFF;--hero-line:rgba(255,255,255,.2);--sh:0 1px 0 rgba(255,255,255,.04) inset,0 10px 24px -16px rgba(0,0,0,.6)}
+.app.r16{--r:16px}.app.r32{--r:32px}
+.app{box-sizing:border-box;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.35;position:relative;overflow:hidden}
+.g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.t{background:var(--tile);border-radius:var(--r);padding:16px;display:grid;gap:4px;align-content:start;box-shadow:var(--sh);min-width:0}
+.s2{grid-column:span 2}
+.k{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.h{font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.sub{color:var(--mute);font-size:12px}
+.row{display:flex;align-items:center;gap:10px}
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700;font-size:11px}
+.chip.g2{background:var(--mint);color:var(--mint-ink)}
+.tabbar{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:99px;background:var(--tile);box-shadow:0 12px 30px -10px rgba(0,0,0,.35),0 0 0 1px var(--line)}
+.tab{display:flex;align-items:center;gap:6px;min-height:44px;min-width:44px;padding:0 14px;box-sizing:border-box;border-radius:99px;font-weight:700;font-size:13px;color:var(--mute);text-decoration:none;justify-content:center}
+.tab.on{background:var(--ink);color:var(--bg)}
+.opt{flex:1;min-height:44px;border-radius:16px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font:700 14px 'DM Sans',Arial,sans-serif;cursor:pointer}
+.opt.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.wb{flex:1;border-radius:7px;background:var(--blue);opacity:.45}
+/* Palette v2: Headspace-inspired. */
+.app{--bg:#F9F4F2;--tile:#FFFFFF;--ink:#2D2C2B;--mute:#68625D;--line:#EBDFD9;--blue:#0061EF;--blue-soft:#E3EDFD;--mint:#FFF0B3;--mint-ink:#6B4F00;--coral:#A8124F;--coral-soft:#FFE1EE;--hero:#FF7A1A;--hero-ink:#2D2C2B;--hero-mute:#5A2E0B;--hero-line:rgba(45,44,43,.22);--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(90,50,30,.3)}
+.app.night{--bg:#16132B;--tile:#221E3F;--ink:#F6F1EE;--mute:#B1A9C9;--line:#352F5C;--blue:#7FB0FF;--blue-soft:#1E3566;--mint:#4A3D0B;--mint-ink:#FFD84D;--coral:#FF9CC6;--coral-soft:#4A1E3A;--hero:#FF8A2B;--hero-ink:#2D2C2B;--hero-mute:#5A2E0B;--hero-line:rgba(45,44,43,.22);--sh:0 10px 24px -16px rgba(0,0,0,.6)}
+/* Palette v3 (supersedes v2): white ground, blush cards, yellow hero, flat, DM Sans throughout. */
+.app{--bg:#FFFFFF;--tile:#F9F4F2;--ink:#2D2C2B;--mute:#63605D;--line:#E9DDD7;--blue:#0061EF;--blue-soft:#E1ECFD;--mint:#FFE1C7;--mint-ink:#7A3200;--coral:#A1124F;--coral-soft:#FFD9EA;--hero:#FFCE00;--hero-ink:#2D2C2B;--hero-mute:#5C4A00;--hero-line:rgba(45,44,43,.2);--sh:none}
+.app.night{--bg:#1B1740;--tile:#2B2560;--ink:#FFFFFF;--mute:#C2BBE6;--line:#40398A;--blue:#8DB9FF;--blue-soft:#2A3F7E;--mint:#5B3417;--mint-ink:#FFC08A;--coral:#FFA1CC;--coral-soft:#5A2150;--hero:#FFCE00;--hero-ink:#2D2C2B;--hero-mute:#5C4A00;--hero-line:rgba(45,44,43,.2);--sh:none}
+.h{font-family:'DM Sans',Arial,sans-serif;font-weight:700;letter-spacing:-.02em}
+.k{font-family:'DM Sans',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em}
+</style>
+</helmet>
+<div class="app {{modeClass}}" style="width: 390px; height: 1040px; padding: 62px 14px 110px; display: flex; flex-direction: column; gap: 12px">
+
+<div style="padding: 0 4px">
+<div class="k">Last 6 weeks</div>
+<div class="h" style="font-size: 32px; margin-top: 6px">Your gums are the number that matters</div>
+</div>
+
+<div class="g">
+<div class="t s2" style="padding: 18px">
+<div class="k">Do your gums bleed when you clean?</div>
+<div class="row" style="gap: 8px; margin-top: 10px">
+<button class="opt on">Less</button><button class="opt">Same</button><button class="opt">More</button>
+</div>
+<div class="sub" style="margin-top: 10px; font-size: 13px">Fewer bleeds than last month. This is the number your dentist cares about.</div>
+</div>
+
+<div class="t s2" style="padding: 18px">
+<div class="row" style="justify-content: space-between"><div class="k">Between-teeth cleaning</div><span class="chip g2">5 of 6 weeks on target</span></div>
+<div style="display: flex; gap: 7px; align-items: flex-end; height: 90px; margin-top: 12px">
+<span class="wb" style="height: 34px"></span><span class="wb" style="height: 47px"></span><span class="wb" style="height: 51px"></span><span class="wb" style="height: 41px"></span><span class="wb" style="height: 66px"></span><span class="wb" style="height: 90px; opacity: 1"></span>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; color: var(--mute); margin-top: 4px"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>Now</span></div>
+</div>
+
+<div class="t" style="min-height: 120px">
+<div class="k">Weeks active</div>
+<div class="h" style="font-size: 52px; font-weight: 800; margin-top: 6px">6</div>
+<div class="sub">No streak to lose</div>
+</div>
+<div class="t" style="background: var(--blue-soft); min-height: 120px">
+<div class="k" style="color: var(--blue)">Insights</div>
+<div class="h" style="font-size: 52px; font-weight: 800; margin-top: 6px">11<span style="font-size: 18px; color: var(--mute)">/30</span></div>
+<div class="sub">Collected by finishing</div>
+</div>
+
+<div class="t s2" style="background: var(--coral-soft); padding: 18px">
+<div class="k" style="color: var(--coral)">Dentist visit</div>
+<div class="h" style="font-size: 26px; margin-top: 4px; color: var(--ink)">In 24 days</div>
+<div class="sub" style="color: var(--ink); opacity: .75">A one-page summary of your routine and gum trend is ready.</div>
+<button style="margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border: 0; border-radius: 18px; background: var(--ink); color: var(--bg); font: 700 15px 'DM Sans', Arial, sans-serif; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v7h14v-7"/></svg>Share summary</button>
+</div>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+<a class="tab" href="Main.dc.html" aria-label="Today"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/></svg></a>
+<a class="tab" href="Routine.dc.html" aria-label="Routine"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg></a>
+<a class="tab on" href="Progress.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg>Progress</a>
+<a class="tab" href="Mouth.dc.html" aria-label="My mouth"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4C4 4 3 7 4 10s1 10 4 10c2 0 1-5 4-5s2 5 4 5c3 0 3-7 4-10s0-6-3-6c-2 0-3 1-5 1S9 4 7 4z"/></svg></a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"night":{"editor":"boolean","default":false},"radius":{"editor":"enum","default":"24","options":["16","24","32"]},"$preview":{"width":390,"height":1040}}'>
+class Component extends DCLogic {
+renderVals() {
+const night = this.props.night ?? false;
+const r = this.props.radius ?? '24';
+return { modeClass: (night ? 'night' : 'day') + ' r' + r };
+}
+}
+</script>
+</body>
+</html>

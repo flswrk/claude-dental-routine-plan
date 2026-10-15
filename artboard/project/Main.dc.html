@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Today</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0;font-family:'DM Sans',Arial,sans-serif}
+.app{--bg:#EEF1F0;--tile:#FFFFFF;--ink:#101C25;--mute:#5E6E77;--line:#DDE4E3;--blue:#3547D9;--blue-soft:#E3E7FD;--mint:#D9F0E6;--mint-ink:#16704D;--coral:#B93A26;--coral-soft:#FBE3DE;--hero:#101C25;--hero-ink:#FFFFFF;--hero-mute:#A8B8C0;--hero-line:rgba(255,255,255,.16);--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(16,28,37,.32);--r:24px}
+.app.night{--bg:#0B1218;--tile:#16212B;--ink:#EAF0F0;--mute:#8CA0AA;--line:#223340;--blue:#9AA7FF;--blue-soft:#222C63;--mint:#133428;--mint-ink:#6FDCAB;--coral:#F28B79;--coral-soft:#43211B;--hero:#2B3BC9;--hero-ink:#FFFFFF;--hero-mute:#C9CFFF;--hero-line:rgba(255,255,255,.2);--sh:0 1px 0 rgba(255,255,255,.04) inset,0 10px 24px -16px rgba(0,0,0,.6)}
+.app.r16{--r:16px}.app.r32{--r:32px}
+.app{box-sizing:border-box;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.35;position:relative;overflow:hidden}
+.g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.t{background:var(--tile);border-radius:var(--r);padding:16px;display:grid;gap:4px;align-content:start;box-shadow:var(--sh);min-width:0}
+.s2{grid-column:span 2}
+.k{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.h{font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+.sub{color:var(--mute);font-size:12px}
+.row{display:flex;align-items:center;gap:10px}
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700;font-size:11px}
+.chip.g2{background:var(--mint);color:var(--mint-ink)}
+.tabbar{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);display:flex;gap:4px;padding:6px;border-radius:99px;background:var(--tile);box-shadow:0 12px 30px -10px rgba(0,0,0,.35),0 0 0 1px var(--line)}
+.tab{display:flex;align-items:center;gap:6px;min-height:44px;min-width:44px;padding:0 14px;box-sizing:border-box;border-radius:99px;font-weight:700;font-size:13px;color:var(--mute);text-decoration:none;justify-content:center}
+.tab.on{background:var(--ink);color:var(--bg)}
+.step{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--hero-line)}
+.cb{width:26px;height:26px;border-radius:50%;border:1.8px solid var(--hero-mute);display:grid;place-items:center;box-sizing:border-box}
+.cb.on{background:#fff;border-color:#fff;color:var(--hero)}
+.bar{flex:1;border-radius:6px;background:var(--line)}
+.bar.f{background:var(--blue)}.bar.h2{background:var(--blue);opacity:.45}
+/* Palette v2: Headspace-inspired. Blush ground, charcoal ink, signature orange hero, yellow and pink accents, blue for progress. */
+.app{--bg:#F9F4F2;--tile:#FFFFFF;--ink:#2D2C2B;--mute:#68625D;--line:#EBDFD9;--blue:#0061EF;--blue-soft:#E3EDFD;--mint:#FFF0B3;--mint-ink:#6B4F00;--coral:#A8124F;--coral-soft:#FFE1EE;--hero:#FF7A1A;--hero-ink:#2D2C2B;--hero-mute:#5A2E0B;--hero-line:rgba(45,44,43,.22);--ring:#0061EF;--active:#0061EF;--active-ink:#FFFFFF;--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(90,50,30,.3)}
+.app.night{--bg:#16132B;--tile:#221E3F;--ink:#F6F1EE;--mute:#B1A9C9;--line:#352F5C;--blue:#7FB0FF;--blue-soft:#1E3566;--mint:#4A3D0B;--mint-ink:#FFD84D;--coral:#FF9CC6;--coral-soft:#4A1E3A;--hero:#FF8A2B;--hero-ink:#2D2C2B;--hero-mute:#5A2E0B;--hero-line:rgba(45,44,43,.22);--ring:#7FB0FF;--active:#0061EF;--active-ink:#FFFFFF;--sh:0 10px 24px -16px rgba(0,0,0,.6)}
+.cb.on{background:var(--hero-ink);border-color:var(--hero-ink)}
+/* Palette v3 (supersedes v2): white ground, blush cards, yellow hero, flat, DM Sans throughout. Hex values read from headspace.com. */
+.app{--bg:#FFFFFF;--tile:#F9F4F2;--ink:#2D2C2B;--mute:#63605D;--line:#E9DDD7;--blue:#0061EF;--blue-soft:#E1ECFD;--mint:#FFE1C7;--mint-ink:#7A3200;--coral:#A1124F;--coral-soft:#FFD9EA;--hero:#FFCE00;--hero-ink:#2D2C2B;--hero-mute:#5C4A00;--hero-line:rgba(45,44,43,.2);--ring:#0061EF;--active:#0061EF;--active-ink:#FFFFFF;--sh:none}
+.app.night{--bg:#1B1740;--tile:#2B2560;--ink:#FFFFFF;--mute:#C2BBE6;--line:#40398A;--blue:#8DB9FF;--blue-soft:#2A3F7E;--mint:#5B3417;--mint-ink:#FFC08A;--coral:#FFA1CC;--coral-soft:#5A2150;--hero:#FFCE00;--hero-ink:#2D2C2B;--hero-mute:#5C4A00;--hero-line:rgba(45,44,43,.2);--ring:#FFCE00;--active:#0061EF;--active-ink:#FFFFFF;--sh:none}
+.h{font-family:'DM Sans',Arial,sans-serif;font-weight:700;letter-spacing:-.02em}
+.k{font-family:'DM Sans',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em}
+</style>
+</helmet>
+<div class="app {{modeClass}}" style="width: 390px; height: 1040px; padding: 62px 14px 110px; display: flex; flex-direction: column; gap: 12px">
+
+<div class="row" style="justify-content: space-between; padding: 0 4px">
+<div>
+<div class="k">Thursday · 15 Oct</div>
+<div class="h" style="font-size: 28px; margin-top: 4px">Good evening, Priya</div>
+</div>
+<div class="h" style="width: 40px; height: 40px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; font-size: 18px">P</div>
+</div>
+
+<div class="t" style="background: var(--hero); color: var(--hero-ink); padding: 18px; gap: 6px">
+<div class="row" style="justify-content: space-between; align-items: flex-start">
+<div>
+<div class="k" style="color: var(--hero-mute)">Tonight · about 6 min</div>
+<div class="h" style="font-size: 28px; margin-top: 6px">One step left</div>
+</div>
+<div style="position: relative; width: 56px; height: 56px">
+<svg width="56" height="56" viewBox="0 0 56 56" style="transform: rotate(-90deg); display: block" aria-hidden="true"><circle cx="28" cy="28" r="24" fill="none" stroke="rgba(45,44,43,.18)" stroke-width="6"/><circle cx="28" cy="28" r="24" fill="none" stroke="#2D2C2B" stroke-width="6" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="75.4"/></svg>
+<div class="h" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 16px">1/2</div>
+</div>
+</div>
+<div style="margin-top: 8px">
+<div class="step" style="border-top: 0">
+<span class="cb on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+<div><div style="font-weight: 700; font-size: 15px; opacity: .6">Clean between teeth</div><div style="font-size: 12px; color: var(--hero-mute)">Interdental brush 0.8 mm · 2 min</div></div>
+<span></span>
+</div>
+<div class="step">
+<span class="cb"></span>
+<div><div style="font-weight: 700; font-size: 15px">Brush, soft and slow</div><div style="font-size: 12px; color: var(--hero-mute)">2 min · fluoride paste · spit, don't rinse</div></div>
+<span></span>
+</div>
+<div class="step">
+<span class="cb" style="border-style: dashed"></span>
+<div><div style="font-weight: 700; font-size: 15px">Water flosser</div><div style="font-size: 12px; color: var(--hero-mute)">Thursday · around the implant</div></div>
+<span style="font-size: 11px; font-weight: 700; color: var(--hero-mute); border: 1px solid var(--hero-line); border-radius: 99px; padding: 3px 8px">optional</span>
+</div>
+</div>
+<button style="margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border: 0; border-radius: 18px; background: var(--hero-ink); color: #fff; font: 700 15px 'DM Sans', Arial, sans-serif; cursor: pointer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>Start guided brushing</button>
+</div>
+
+<div class="g">
+<div class="t">
+<div class="k">This week</div>
+<div style="display: flex; gap: 5px; align-items: flex-end; height: 48px; margin-top: 8px">
+<span class="bar f" style="height: 48px"></span><span class="bar f" style="height: 48px"></span><span class="bar h2" style="height: 28px"></span><span class="bar f" style="height: 36px; outline: 2px solid var(--ink); outline-offset: 1px"></span><span class="bar" style="height: 8px"></span><span class="bar" style="height: 8px"></span><span class="bar" style="height: 8px"></span>
+</div>
+<div class="sub" style="margin-top: 6px">6 of 7 days. A missed night costs nothing.</div>
+</div>
+<div class="t" style="background: var(--mint); color: var(--mint-ink)">
+<div class="row" style="justify-content: space-between"><div class="k" style="color: var(--mint-ink)">Gums</div>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 14c1.2 1.6 6.8 1.6 8 0M9 9.5h.01M15 9.5h.01"/></svg></div>
+<div class="h" style="font-size: 26px; margin-top: 10px">Calmer</div>
+<div style="font-size: 12px">Bleeding: rarely, down from sometimes</div>
+</div>
+<div class="t" style="background: var(--blue-soft)">
+<div class="row" style="justify-content: space-between"><div class="k" style="color: var(--blue)">Tonight's focus</div>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4C4 4 3 7 4 10s1 10 4 10c2 0 1-5 4-5s2 5 4 5c3 0 3-7 4-10s0-6-3-6c-2 0-3 1-5 1S9 4 7 4z"/></svg></div>
+<div class="h" style="font-size: 18px; margin-top: 10px">Lower right implant</div>
+<div class="sub">Add 20 seconds at the gumline</div>
+</div>
+<div class="t">
+<div class="k">Check-up in</div>
+<div class="h" style="font-size: 44px; font-weight: 800; margin-top: 4px">24</div>
+<div class="sub">days · summary ready to share</div>
+</div>
+<div class="t s2" style="background: transparent; box-shadow: none; border: 1.5px dashed var(--line)">
+<div class="row" style="justify-content: space-between"><div class="k">Insight 12 of 30</div>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mute)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+<div class="h" style="font-size: 18px; color: var(--mute); margin-top: 4px">Finish tonight's routine to unlock</div>
+<div style="display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); gap: 3px; margin-top: 8px">
+<span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--blue)"></span><span style="height: 6px; border-radius: 3px; background: var(--line)"></span><span style="height: 6px; border-radius: 3px; background: var(--line)"></span><span style="height: 6px; border-radius: 3px; background: var(--line)"></span><span style="height: 6px; border-radius: 3px; background: var(--line)"></span>
+</div>
+</div>
+</div>
+
+<nav class="tabbar" aria-label="Main">
+<a class="tab on" href="Main.dc.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/></svg>Today</a>
+<a class="tab" href="Routine.dc.html" aria-label="Routine"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg></a>
+<a class="tab" href="Progress.dc.html" aria-label="Progress"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg></a>
+<a class="tab" href="Mouth.dc.html" aria-label="My mouth"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4C4 4 3 7 4 10s1 10 4 10c2 0 1-5 4-5s2 5 4 5c3 0 3-7 4-10s0-6-3-6c-2 0-3 1-5 1S9 4 7 4z"/></svg></a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"night":{"editor":"boolean","default":true},"radius":{"editor":"enum","default":"24","options":["16","24","32"]},"$preview":{"width":390,"height":1040}}'>
+class Component extends DCLogic {
+renderVals() {
+const night = this.props.night ?? true;
+const r = this.props.radius ?? '24';
+return { modeClass: (night ? 'night' : 'day') + ' r' + r };
+}
+}
+</script>
+</body>
+</html>

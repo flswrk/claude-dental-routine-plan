@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Set-up: safety pause</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0;font-family:'DM Sans',Arial,sans-serif}
+.app{--bg:#EEF1F0;--tile:#FFFFFF;--ink:#101C25;--mute:#5E6E77;--line:#DDE4E3;--coral:#B93A26;--coral-soft:#FBE3DE;--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(16,28,37,.32);--r:24px}
+.app.night{--bg:#0B1218;--tile:#16212B;--ink:#EAF0F0;--mute:#8CA0AA;--line:#223340;--coral:#F28B79;--coral-soft:#43211B;--sh:0 10px 24px -16px rgba(0,0,0,.6)}
+.app.r16{--r:16px}.app.r32{--r:32px}
+.app{box-sizing:border-box;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.35;position:relative;overflow:hidden}
+.k{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.h{font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700;letter-spacing:-.025em;line-height:1.05}
+/* Palette v2: Headspace-inspired. */
+.app{--bg:#F9F4F2;--tile:#FFFFFF;--ink:#2D2C2B;--mute:#68625D;--line:#EBDFD9;--coral:#A8124F;--coral-soft:#FFE1EE;--sh:0 1px 0 rgba(255,255,255,.9) inset,0 10px 24px -16px rgba(90,50,30,.3)}
+.app.night{--bg:#16132B;--tile:#221E3F;--ink:#F6F1EE;--mute:#B1A9C9;--line:#352F5C;--coral:#FF9CC6;--coral-soft:#4A1E3A;--sh:0 10px 24px -16px rgba(0,0,0,.6)}
+/* Palette v3 (supersedes v2). */
+.app{--bg:#FFFFFF;--tile:#F9F4F2;--ink:#2D2C2B;--mute:#63605D;--line:#E9DDD7;--coral:#A1124F;--coral-soft:#FFD9EA;--sh:none}
+.app.night{--bg:#1B1740;--tile:#2B2560;--ink:#FFFFFF;--mute:#C2BBE6;--line:#40398A;--coral:#FFA1CC;--coral-soft:#5A2150;--sh:none}
+.h{font-family:'DM Sans',Arial,sans-serif;font-weight:700;letter-spacing:-.02em}
+.k{font-family:'DM Sans',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em}
+</style>
+</helmet>
+<div class="app {{modeClass}}" style="width: 390px; height: 844px; padding: 62px 14px 34px; display: flex; flex-direction: column; gap: 12px">
+
+<div style="padding: 0 4px">
+<div class="k">Step 4 of 5 · Quick safety check</div>
+<div class="h" style="font-size: 34px; margin-top: 8px">Let's pause here</div>
+</div>
+
+<div style="background: var(--coral-soft); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="width: 48px; height: 48px; border-radius: 16px; background: var(--tile); display: grid; place-items: center; color: var(--coral)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M12 8v5M12 16h.01"/></svg></div>
+<div class="h" style="font-size: 24px; margin-top: 6px">A swelling near a tooth needs a dentist, not a routine.</div>
+<div style="font-size: 14px; color: var(--ink); opacity: .8; line-height: 1.5">Cleaning will not fix an infection, and the wrong advice could delay care. Please book a visit soon. We will keep your answers so you can pick up where you left off.</div>
+</div>
+
+<div style="background: var(--tile); border-radius: var(--r); padding: 18px; box-shadow: var(--sh); display: flex; flex-direction: column; gap: 8px">
+<div class="k">If you also have</div>
+<div style="font-weight: 700; font-size: 15px; line-height: 1.4">Fever, swelling that spreads to your face, or trouble swallowing or breathing: get urgent medical care now.</div>
+</div>
+
+<div style="margin-top: auto; display: grid; gap: 8px">
+<button style="min-height: 54px; border: 0; border-radius: 20px; background: var(--ink); color: var(--bg); font: 700 16px 'DM Sans', Arial, sans-serif; cursor: pointer">Find a dentist near me</button>
+<button style="min-height: 52px; border: 1.5px solid var(--line); border-radius: 20px; background: transparent; color: var(--ink); font: 700 15px 'DM Sans', Arial, sans-serif; cursor: pointer">Change my answers</button>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"night":{"editor":"boolean","default":false},"radius":{"editor":"enum","default":"24","options":["16","24","32"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+const night = this.props.night ?? false;
+const r = this.props.radius ?? '24';
+return { modeClass: (night ? 'night' : 'day') + ' r' + r };
+}
+}
+</script>
+</body>
+</html>

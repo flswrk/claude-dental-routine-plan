@@ -1,0 +1,476 @@
+<title>Tend Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a studio review deck. Narrative sections on a 960px column, product screens as a horizontal film strip of phones. */
+:root{
+  --bg:#F3F5F4; --surface:#FFFFFF; --ink:#12202A; --muted:#566670; --line:#DCE3E2;
+  --accent:#3547D9; --accent-soft:#E4E8FC; --gum:#D8523F; --gum-soft:#FBE6E2;
+  --ok:#1E8A62; --ok-soft:#DDF1E8; --warn:#9A6A00; --warn-soft:#FBEFCF;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'DM Sans','Helvetica Neue',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  /* product-screen palette, fixed: phones show the app, not the page theme */
+  --p-bg:#F4F7F6; --p-card:#FFFFFF; --p-ink:#12202A; --p-mute:#64767F; --p-line:#E1E8E7;
+  --p-accent:#3547D9; --p-accent-soft:#E4E8FC; --p-gum:#D8523F; --p-gum-soft:#FBE6E2; --p-ok:#1E8A62; --p-ok-soft:#DDF1E8;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E161C; --surface:#16222B; --ink:#E8EEEE; --muted:#9BAAB2; --line:#26353F;
+  --accent:#8C9BFF; --accent-soft:#222C5C; --gum:#F08574; --gum-soft:#4A2620;
+  --ok:#5FD3A2; --ok-soft:#173A2C; --warn:#F0C25E; --warn-soft:#3F3212; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E161C; --surface:#16222B; --ink:#E8EEEE; --muted:#9BAAB2; --line:#26353F;
+  --accent:#8C9BFF; --accent-soft:#222C5C; --gum:#F08574; --gum-soft:#4A2620;
+  --ok:#5FD3A2; --ok-soft:#173A2C; --warn:#F0C25E; --warn-soft:#3F3212; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:800}
+h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700}
+h3{font-size:1.2rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+nav .wrap{display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center;font-size:.85rem}
+nav b{font-family:var(--display);font-size:1.05rem;margin-right:auto}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover,nav a:focus-visible{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header.hero{padding-block:56px 40px;display:grid;gap:22px}
+header.hero p.lead{font-size:1.2rem;max-width:44rem;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:.8rem;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+section{padding-block:52px;border-top:1px solid var(--line);display:grid;gap:24px}
+section>.intro{display:grid;gap:10px;max-width:46rem}
+section>.intro p{color:var(--muted)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:8px;align-content:start;min-width:0}
+.card p{color:var(--muted);font-size:.94rem}
+.card.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.tag{justify-self:start;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+.tag.gum{background:var(--gum-soft);color:var(--gum)}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.bets{counter-reset:b}
+.bet{display:grid;gap:6px;padding-top:14px;border-top:2px solid var(--ink)}
+.bet p{color:var(--muted);font-size:.95rem}
+.scrollx{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td b{font-weight:700}
+/* phones */
+.strip{display:flex;gap:28px;overflow-x:auto;padding:8px 4px 28px;scroll-snap-type:x proximity}
+.shot{flex:0 0 auto;display:grid;gap:12px;width:268px;scroll-snap-align:start}
+.shot figcaption{font-size:.86rem;color:var(--muted)}
+.shot figcaption b{display:block;color:var(--ink);font-family:var(--display);font-size:1rem;margin-bottom:2px}
+.shot{margin:0}
+.phone{width:268px;height:552px;border-radius:38px;background:#0E1A22;padding:7px;box-shadow:0 18px 40px -18px rgba(10,20,30,.45)}
+.scr{width:100%;height:100%;border-radius:31px;background:var(--p-bg);color:var(--p-ink);overflow:hidden;position:relative;display:flex;flex-direction:column;padding:34px 15px 14px;gap:10px;font-size:12px;line-height:1.4}
+.scr::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:62px;height:16px;border-radius:9px;background:#0E1A22}
+.scr h4{font-family:var(--display);font-size:20px;line-height:1.1;margin:0;letter-spacing:-.02em;font-weight:700}
+.scr .sub{color:var(--p-mute);font-size:11.5px}
+.scr .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--p-mute)}
+.pc{background:var(--p-card);border:1px solid var(--p-line);border-radius:14px;padding:10px 11px;display:grid;gap:3px}
+.pc.sel{border-color:var(--p-accent);background:var(--p-accent-soft)}
+.row{display:flex;align-items:center;gap:9px}
+.row.sp{justify-content:space-between}
+.dot{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--p-line);flex:0 0 auto;display:grid;place-items:center;font-size:11px;color:#fff}
+.dot.on{background:var(--p-accent);border-color:var(--p-accent)}
+.dot.done{background:var(--p-ok);border-color:var(--p-ok)}
+.btn{margin-top:auto;background:var(--p-ink);color:#fff;border-radius:14px;padding:12px;text-align:center;font-weight:700;font-size:13px}
+.btn.alt{background:transparent;color:var(--p-ink);border:1px solid var(--p-line);margin-top:0}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tiles .pc{justify-items:start;padding:9px 10px;gap:5px}
+.ico{width:24px;height:24px;border-radius:8px;background:var(--p-accent-soft);display:grid;place-items:center}
+.ico svg{width:15px;height:15px;stroke:var(--p-accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pill{font-size:9.5px;padding:2px 7px;border-radius:99px;background:var(--p-accent-soft);color:var(--p-accent);font-weight:700}
+.pill.g{background:var(--p-ok-soft);color:var(--p-ok)}
+.pill.r{background:var(--p-gum-soft);color:var(--p-gum)}
+.step{display:grid;grid-template-columns:22px 1fr auto;gap:9px;align-items:start;padding:9px 0;border-top:1px solid var(--p-line)}
+.step:first-of-type{border-top:0}
+.step b{display:block;font-size:12.5px}
+.step span{color:var(--p-mute);font-size:11px}
+.why{font-size:10px;color:var(--p-accent);font-weight:700;white-space:nowrap}
+.tabbar{margin-top:auto;display:flex;justify-content:space-around;border-top:1px solid var(--p-line);padding-top:9px;font-size:10px;color:var(--p-mute)}
+.tabbar b{color:var(--p-ink)}
+.week{display:flex;gap:5px}
+.week i{flex:1;height:34px;border-radius:7px;background:var(--p-line);display:block}
+.week i.a{background:#C5CEFA}.week i.b{background:var(--p-accent)}.week i.m{background:var(--p-gum-soft)}
+.ring{width:150px;height:150px;margin:2px auto;position:relative}
+.ring svg{width:100%;height:100%}
+.ring div{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:30px;font-weight:700}
+.ring small{display:block;font-family:var(--body);font-size:10px;color:var(--p-mute);font-weight:400}
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.quad i{height:24px;border-radius:8px;background:var(--p-line);font-style:normal;font-size:9.5px;display:grid;place-items:center;color:var(--p-mute)}
+.quad i.d{background:var(--p-ok-soft);color:var(--p-ok)}.quad i.n{background:var(--p-accent);color:#fff}
+.sheet{margin-top:auto;margin-inline:-15px;margin-bottom:-14px;background:var(--p-card);border-radius:22px 22px 0 0;padding:14px 15px 16px;display:grid;gap:8px;border-top:1px solid var(--p-line);box-shadow:0 -10px 30px -16px rgba(0,0,0,.25)}
+.bar{height:5px;border-radius:3px;background:var(--p-line);overflow:hidden}.bar i{display:block;height:100%;background:var(--p-ok)}
+/* palette + type */
+.sw{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.sw div{border-radius:12px;padding:14px;min-height:96px;display:flex;flex-direction:column;justify-content:flex-end;font-size:.8rem;font-family:var(--mono)}
+.sw b{font-family:var(--display);font-size:1rem}
+.type-spec{display:grid;gap:6px}
+.big{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1;letter-spacing:-.03em}
+/* engine */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;counter-reset:f}
+.flow>div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:4px;position:relative;align-content:start}
+.flow>div b{font-family:var(--display)}
+.flow>div p{font-size:.84rem;color:var(--muted)}
+pre{margin:0;background:#0F1B24;color:#D6E4E8;border-radius:12px;padding:16px;font-family:var(--mono);font-size:.78rem;line-height:1.6;overflow-x:auto}
+pre .c{color:#7E95A0}pre .s{color:#9FE0C0}pre .k{color:#A9B6FF}pre .r{color:#FFA394}
+.demo{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:20px;align-items:start}
+@media(max-width:720px){.demo{grid-template-columns:1fr}}
+.toggles{display:grid;gap:6px}
+.toggles label{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:.9rem;cursor:pointer}
+.toggles label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.toggles label.rf:has(input:checked){border-color:var(--gum);background:var(--gum-soft)}
+.toggles input{accent-color:var(--accent);width:16px;height:16px}
+.out{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 18px 14px;min-height:300px}
+.out h3{padding-top:14px}
+.it{display:grid;grid-template-columns:auto 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:start}
+.it:last-child{border-bottom:0}
+.it .when{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);width:54px;padding-top:3px}
+.it b{display:block}.it span.d{font-size:.88rem;color:var(--muted)}
+.it .meta{display:grid;gap:4px;justify-items:end;font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.stop{background:var(--gum-soft);border:1px solid var(--gum);border-radius:12px;padding:16px;margin-top:14px;display:grid;gap:6px}
+.stop b{color:var(--gum);font-family:var(--display);font-size:1.15rem}
+.cons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:.8rem;color:var(--muted)}
+/* console */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.console .bar2{display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.74rem;color:var(--muted);flex-wrap:wrap}
+.console .body{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:0}
+@media(max-width:720px){.console .body{grid-template-columns:1fr}}
+.console .body>div{padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.console .body>div+div{border-left:1px solid var(--line)}
+@media(max-width:720px){.console .body>div+div{border-left:0;border-top:1px solid var(--line)}}
+.test{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:.76rem;padding:5px 0;border-bottom:1px dashed var(--line)}
+.ok{color:var(--ok)}
+.mnm{display:grid;gap:12px}
+.mnm .card h3{display:flex;gap:8px;align-items:center}
+ul.clean{margin:0;padding-left:1.1em;display:grid;gap:5px;color:var(--muted);font-size:.94rem}
+ul.clean b{color:var(--ink)}
+.q{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.q i{font-style:normal;font-family:var(--mono);color:var(--accent);font-size:.8rem;padding-top:3px}
+.q p{color:var(--muted);font-size:.93rem}
+.q b{display:block;font-family:var(--display);font-size:1.05rem}
+footer{padding-block:40px 60px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:no-preference){.card,.toggles label{transition:border-color .15s,background .15s}}
+</style>
+
+<nav><div class="wrap"><b>Tend</b><a href="#brief">Brief</a><a href="#users">Users</a><a href="#directions">Directions</a><a href="#product">Product</a><a href="#design">Design</a><a href="#engine">Engine</a><a href="#scope">Scope</a><a href="#open">Open questions</a></div></nav>
+
+<div class="wrap">
+<header class="hero">
+  <span class="eyebrow">Phase 1 · Product discovery and visual design · working name "Tend"</span>
+  <h1>A routine that fits your mouth, and is short enough to keep.</h1>
+  <p class="lead">Most people leave the dental chair with generic advice and a pamphlet. Tend turns what is true about your teeth, your restorations and your health into the few daily actions that matter most for you, explains each one, and gets out of your way.</p>
+  <div class="chips"><span class="chip">Not built yet, nothing here is final</span><span class="chip">Rules shown are illustrative and not clinically reviewed</span><span class="chip">Mockups are static, the engine demo is live</span></div>
+</header>
+
+<section id="brief">
+  <div class="intro"><span class="eyebrow">The recommendation</span><h2>Build a rules-based routine coach, not an AI dentist and not a tracker.</h2>
+  <p>My short answer after working through the problem. The three bets below are what I would defend, and the rest of this page shows the evidence for them.</p></div>
+  <div class="grid g3 bets">
+    <div class="bet"><h3>1. The product is the subtraction</h3><p>Dental advice is long. A person with an implant, mild gum bleeding and a dry mouth gets about twelve "shoulds". Tend's value is picking the three that matter most this month and sequencing them into a morning and evening routine under ten minutes.</p></div>
+    <div class="bet"><h3>2. Rules, with a human owner for every one</h3><p>A versioned, readable rule set, each rule signed off by a named dentist, with a source and an evidence grade. It is testable, explainable on screen and safe to audit. A language model may reword explanations later. It never decides what you are told to do.</p></div>
+    <div class="bet"><h3>3. Honest about its limits</h3><p>Tend does not diagnose. It has a hard stop for warning signs, it says "ask your dentist" when evidence is thin, and it measures success by consistency and self-reported gum comfort, not by a score that rewards doing more.</p></div>
+  </div>
+  <div class="card pick"><span class="tag">Wedge</span><h3>Start with adults whose mouths changed: new implant, crown or bridge, braces or aligners, or a gum disease diagnosis.</h3><p>These people have a reason to care now, a clinician who gave them instructions they forgot, and routines that really differ from the default. Healthy-mouth adults come second. Children are a separate product because the rules, the buyer and the consent model are all different.</p></div>
+</section>
+
+<section id="users">
+  <div class="intro"><span class="eyebrow">Problem space</span><h2>The gap is translation and follow-through, not knowledge.</h2>
+  <p>Brushing twice a day is common knowledge. What people lack is the specific "how" for their own mouth, a reason to believe it, and a way to keep it up after the first fortnight.</p></div>
+  <div class="scrollx"><table>
+    <thead><tr><th>Segment</th><th>Real problem</th><th>Routine differs?</th><th>Motivation</th><th>Fit</th></tr></thead>
+    <tbody>
+      <tr><td><b>New implant, crown, bridge</b></td><td>Told once how to clean around it, no one repeats it. Peri-implant disease is silent early.</td><td>Yes, strongly</td><td>High, they paid for it</td><td><span class="tag ok">Wedge</span></td></tr>
+      <tr><td><b>Braces and aligners</b></td><td>Plaque and white spots under brackets, a long list of tools, months of effort.</td><td>Yes, strongly</td><td>High but young, often a parent decides</td><td><span class="tag ok">Wedge</span></td></tr>
+      <tr><td><b>Gum disease or on maintenance</b></td><td>Needs daily interdental cleaning and does not do it. Bleeding is misread as "stop touching it".</td><td>Yes</td><td>Medium, rises after a scare</td><td><span class="tag ok">Wedge</span></td></tr>
+      <tr><td><b>Diabetes, dry mouth, older adults</b></td><td>Higher risk, more tools, less dexterity, mouthwash that makes dryness worse.</td><td>Yes</td><td>Medium</td><td><span class="tag warn">Layer in</span></td></tr>
+      <tr><td><b>Healthy adults</b></td><td>No pain, no urgency, routine decays quietly.</td><td>Slightly</td><td>Low</td><td><span class="tag">Later</span></td></tr>
+      <tr><td><b>Children</b></td><td>Parent is the user, dosing and supervision rules differ.</td><td>Yes</td><td>Parent-driven</td><td><span class="tag gum">Not v1</span></td></tr>
+    </tbody></table></div>
+  <div class="card"><h3>Assumptions I would challenge</h3>
+    <ul class="clean"><li><b>"Personalized" is mostly "different tools and technique", not different frequency.</b> Twice-daily brushing and daily interdental cleaning hold for almost everyone. The personalization is which tool, how, and what extra.</li>
+    <li><b>More tracking is not better.</b> A checklist with ten items trains people to tick without doing. Cap the daily routine, and show only what changes the plan.</li>
+    <li><b>Gamification can backfire.</b> Streak loss punishes the exact person who needs forgiveness. Track weeks, not unbroken days.</li>
+    <li><b>Camera-based plaque detection is tempting and risky.</b> Consumer photos are unreliable, and false reassurance is the worst failure. Defer.</li></ul></div>
+</section>
+
+<section id="directions">
+  <div class="intro"><span class="eyebrow">Alternatives explored</span><h2>Three ways to build this, one I would choose.</h2></div>
+  <div class="grid g3">
+    <div class="card"><span class="tag">A</span><h3>Self-serve consumer coach</h3><p>User answers questions and gets a routine. Fast to launch, broad reach. Weak on data quality: people misreport what is in their mouth, and nobody clinical stands behind the plan.</p></div>
+    <div class="card"><span class="tag">B</span><h3>Dentist-prescribed companion</h3><p>Clinic sets up the profile and Tend delivers it. Best accuracy and trust. Slow: you need clinic sales, integrations and support before a single user arrives.</p></div>
+    <div class="card pick"><span class="tag ok">Recommended</span><h3>C. Self-serve first, dentist-confirmable</h3><p>Anyone can start in five minutes. The profile can later be "confirmed by my dentist" via a shareable summary or code, which unlocks clinician-only rules such as higher-strength fluoride. Gets users now, builds toward B without committing to it.</p></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>Engine: rules vs. AI</h3><p>Rules win for the core. The inputs are structured, the outputs must be reproducible and defensible, and a clinician must be able to read and sign each decision. An LLM is appropriate only for rewording an approved explanation at a reading level, or answering free-text questions with the approved rule set as its sole source, and both are phase 2.</p></div>
+    <div class="card"><h3>Platform: mobile app vs. web</h3><p>Reminders and a daily habit favor a native-feeling app. Reaching someone from a dentist's link favors the web. I suggest a PWA-style responsive web app for validation, wrapped natively once retention is proven.</p></div>
+  </div>
+</section>
+
+<section id="product">
+  <div class="intro"><span class="eyebrow">The experience</span><h2>Five minutes to a plan, two minutes a day to keep it.</h2>
+  <p>The flow runs left to right: tell us about your mouth, pass a safety check, receive a short routine with reasons, then live with it. Scroll the strip. Every "Why" opens the rule behind it.</p></div>
+
+  <div class="strip" tabindex="0" aria-label="Product screens">
+
+  <figure class="shot"><div class="phone"><div class="scr">
+    <span class="k">Step 2 of 5 · About your mouth</span>
+    <h4>What's in your mouth that isn't a natural tooth?</h4>
+    <span class="sub">Select all that apply. Not sure? Skip, you can ask your dentist later.</span>
+    <div class="tiles">
+      <div class="pc sel"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v7M9 10h6l-1 11h-4z"/></svg></div><b>Implant</b><span class="sub">1 tooth</span></div>
+      <div class="pc"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 9c0-4 14-4 14 0 0 5-2 12-4 12s-1-5-3-5-1 5-3 5-4-7-4-12z"/></svg></div><b>Crown</b></div>
+      <div class="pc"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h18M6 8v8M12 8v8M18 8v8"/></svg></div><b>Bridge</b></div>
+      <div class="pc"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="3"/><path d="M8 8v8M16 8v8"/></svg></div><b>Braces or aligners</b></div>
+      <div class="pc"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 5h14v6c0 6-3 9-7 9s-7-3-7-9z"/></svg></div><b>Dentures</b></div>
+      <div class="pc"><b>None of these</b></div>
+    </div>
+    <div class="btn">Continue</div>
+  </div></div><figcaption><b>Intake, in plain words</b>Tiles instead of a medical form. Each answer is optional and changes the routine visibly on the next screen.</figcaption></figure>
+
+  <figure class="shot"><div class="phone"><div class="scr">
+    <span class="k">Step 4 of 5 · Quick safety check</span>
+    <h4>Anything here right now?</h4>
+    <span class="sub">These need a dentist, not a routine. Tell us and we'll pause.</span>
+    <div class="pc"><div class="row"><span class="dot"></span><b>Swelling or a pimple on the gum</b></div></div>
+    <div class="pc"><div class="row"><span class="dot"></span><b>A tooth or implant that feels loose</b></div></div>
+    <div class="pc"><div class="row"><span class="dot"></span><b>A mouth sore lasting over 3 weeks</b></div></div>
+    <div class="pc"><div class="row"><span class="dot"></span><b>Pain that wakes you at night</b></div></div>
+    <div class="pc sel"><div class="row"><span class="dot on">✓</span><b>None of these</b></div></div>
+    <div class="btn">Build my routine</div>
+  </div></div><figcaption><b>The safety gate</b>Asked before any advice. A yes stops the flow and points to care; it is never hidden in a footer disclaimer.</figcaption></figure>
+
+  <figure class="shot"><div class="phone"><div class="scr">
+    <span class="k">Your routine · version 1</span>
+    <h4>Four things. About 7 minutes a day.</h4>
+    <div class="row" style="flex-wrap:wrap;gap:5px"><span class="pill">Implant, lower right</span><span class="pill">Gums bleed sometimes</span></div>
+    <div class="pc" style="padding:4px 11px">
+      <div class="step"><span class="dot on">☀</span><div><b>Brush, soft and slow</b><span>2 min · fluoride paste · 45° at gumline</span></div><span class="why">Why</span></div>
+      <div class="step"><span class="dot on">☾</span><div><b>Brush again</b><span>2 min · spit, don't rinse</span></div><span class="why">Why</span></div>
+      <div class="step"><span class="dot on">☾</span><div><b>Clean between teeth</b><span>Interdental brush, size 0.8 mm, 2 min</span></div><span class="why">Why</span></div>
+      <div class="step"><span class="dot">+</span><div><b>Water flosser, 3x a week</b><span>Optional extra around the implant</span></div><span class="why">Why</span></div>
+    </div>
+    <span class="sub">Left out on purpose: tongue scraper, whitening, oil pulling. <u>See why</u></span>
+    <div class="btn">Start tonight</div>
+  </div></div><figcaption><b>Routine reveal</b>The moment of value. Short, grouped by time of day, with an explicit "left out" line that builds trust.</figcaption></figure>
+
+  <figure class="shot"><div class="phone"><div class="scr">
+    <span class="k">Thursday</span>
+    <h4>Good evening. One step left.</h4>
+    <div class="pc"><div class="row sp"><b>Morning</b><span class="pill g">Done 7:42</span></div></div>
+    <div class="pc sel" style="gap:6px"><div class="row sp"><b>Tonight</b><span class="sub">~5 min</span></div>
+      <div class="row"><span class="dot done">✓</span><span>Clean between teeth</span></div>
+      <div class="row"><span class="dot"></span><span><b>Brush, soft and slow</b></span></div>
+      <div class="btn" style="margin-top:6px">Start guided brushing</div></div>
+    <span class="k">This week</span>
+    <div class="week"><i class="b"></i><i class="b"></i><i class="a"></i><i class="b"></i><i class="m"></i><i class="b"></i><i class="a"></i></div>
+    <span class="sub">6 of 7 days had at least one step. Missing a night doesn't reset anything.</span>
+    <div class="tabbar"><b>Today</b><span>Routine</span><span>Progress</span><span>My mouth</span></div>
+  </div></div><figcaption><b>Today</b>One screen, one next action. The week strip shows partial days as partial credit; there is no streak to lose.</figcaption></figure>
+
+  <figure class="shot"><div class="phone"><div class="scr">
+    <span class="k">Guided brushing · lower right is your implant</span>
+    <div class="ring"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="64" fill="none" stroke="#E1E8E7" stroke-width="9"/><circle cx="75" cy="75" r="64" fill="none" stroke="#3547D9" stroke-width="9" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="190" transform="rotate(-90 75 75)"/></svg><div><span>1:04<small>of 2:00</small></span></div></div>
+    <div class="quad"><i class="d">Upper right ✓</i><i class="d">Upper left ✓</i><i class="n">Lower left</i><i>Lower right</i></div>
+    <div class="pc"><b>Tilt the brush toward the gum</b><span class="sub">Tiny circles, light pressure. Hard scrubbing wears gums.</span></div>
+    <div class="pc" style="background:var(--p-accent-soft);border-color:transparent"><span class="sub" style="color:var(--p-accent)"><b>Next, lower right:</b> take extra time around the implant, brush bristles angled under the crown edge.</span></div>
+    <div class="btn alt">Pause</div>
+  </div></div><figcaption><b>Guided step</b>A timer that knows your mouth. Cues change with your profile, and the screen works one-handed with wet fingers.</figcaption></figure>
+
+  <figure class="shot"><div class="phone"><div class="scr" style="background:#5C6678">
+    <div style="opacity:.55;color:#fff"><h4>Four things…</h4></div>
+    <div class="sheet">
+      <span class="k">Why this · interdental brush</span>
+      <h4 style="font-size:17px">Plaque collects where a brush can't reach, and implants don't forgive it.</h4>
+      <span class="sub">Gums around an implant can become inflamed (peri-implant mucositis) with little pain. Cleaning daily between teeth and at the implant is the main thing you control.</span>
+      <div class="row sp"><span class="pill g">Strong evidence</span><span class="sub">Rule IM-001 v3</span></div>
+      <div class="bar"><i style="width:82%"></i></div>
+      <span class="sub">Reviewed by Dr. A. Rahman, periodontist · Oct 2026<br>Source: EFP S3 guideline; AAP</span>
+      <div class="btn alt">Ask my dentist about sizing</div>
+    </div>
+  </div></div><figcaption><b>Why this</b>Every recommendation has a reason, an evidence level, a named reviewer and an escape hatch to the dentist.</figcaption></figure>
+
+  <figure class="shot"><div class="phone"><div class="scr">
+    <span class="k">Progress · 6 weeks</span>
+    <h4>Your gums are the number that matters.</h4>
+    <div class="pc"><b>Check-in: do your gums bleed when you clean?</b><div class="row" style="gap:6px;margin-top:3px"><span class="pill">Less</span><span class="pill g">Less ✓</span><span class="pill r">More</span></div><span class="sub">Last month: sometimes. This month: rarely.</span></div>
+    <div class="pc"><span class="k">Interdental cleaning</span><div class="week"><i class="b"></i><i class="b"></i><i class="a"></i><i class="b"></i><i class="b"></i><i class="b"></i></div><span class="sub">5 of 6 weeks at 4+ nights</span></div>
+    <div class="pc" style="background:var(--p-gum-soft);border-color:transparent"><b style="color:var(--p-gum)">Dentist visit due in 24 days</b><span class="sub">Share a one-page summary with your dentist.</span></div>
+    <div class="btn">Share summary</div>
+  </div></div><figcaption><b>Progress</b>Outcomes over activity. Self-reported gum bleeding is a real clinical signal and a better motivator than points.</figcaption></figure>
+
+  </div>
+</section>
+
+<section id="design">
+  <div class="intro"><span class="eyebrow">Design language</span><h2>Calm, bright, a little confident. Closer to a good fitness app than to a clinic.</h2>
+  <p>Dental software looks like a waiting room: teal, stock smiles, clip-art teeth. Tend leans on clean enamel whites, a single saturated blue for action, and a warm gum red reserved for things that need attention. No mascot, no photos of teeth.</p></div>
+  <div class="sw">
+    <div style="background:#F4F7F6;color:#12202A;border:1px solid var(--line)"><b>Enamel</b>#F4F7F6 · ground</div>
+    <div style="background:#12202A;color:#fff"><b>Ink</b>#12202A · text, primary buttons</div>
+    <div style="background:#3547D9;color:#fff"><b>Fluoride blue</b>#3547D9 · action, progress</div>
+    <div style="background:#1E8A62;color:#fff"><b>Healthy green</b>#1E8A62 · done, strong evidence</div>
+    <div style="background:#D8523F;color:#fff"><b>Gum red</b>#D8523F · stop, attention</div>
+  </div>
+  <div class="grid g3">
+    <div class="card type-spec"><span class="eyebrow">Display</span><span class="big">Bricolage</span><p>Bricolage Grotesque for headlines and numbers. Friendly, slightly quirky, never clinical.</p></div>
+    <div class="card type-spec"><span class="eyebrow">Body</span><span class="big" style="font-family:var(--body);font-weight:500;letter-spacing:-.02em">DM Sans</span><p>Plain and legible at small sizes, which matters for the 50+ users who need this most.</p></div>
+    <div class="card type-spec"><span class="eyebrow">Evidence and rules</span><span class="big" style="font-family:var(--mono);font-weight:500;font-size:1.8rem;letter-spacing:-.02em">IM-001 v3</span><p>A monospaced face marks anything that comes from the rule engine, so users learn what is sourced.</p></div>
+  </div>
+  <div class="grid g4">
+    <div class="card"><h3>Subtract first</h3><p>Four steps, not twelve. Every extra item must beat "left out on purpose".</p></div>
+    <div class="card"><h3>Always show the why</h3><p>One tap from any recommendation to its reason, evidence grade and reviewer.</p></div>
+    <div class="card"><h3>Forgive lapses</h3><p>Weeks and partial credit. Return after a gap with a welcome, not a broken streak.</p></div>
+    <div class="card"><h3>Accessible by default</h3><p>Large tap targets, 4.5:1 contrast, no meaning by color alone, works one-handed and with wet hands.</p></div>
+  </div>
+</section>
+
+<section id="engine">
+  <div class="intro"><span class="eyebrow">Clinical intelligence</span><h2>A readable rule set that a dentist can sign and an engineer can test.</h2>
+  <p>Profile in, routine out, with a trace of which rules fired and why. Deterministic, so the same profile always yields the same plan.</p></div>
+
+  <div class="flow">
+    <div><b>1 Profile</b><p>Structured answers: age band, restorations, history, conditions, concerns.</p></div>
+    <div><b>2 Safety gate</b><p>Red-flag rules run first and can halt everything.</p></div>
+    <div><b>3 Rule match</b><p>Each rule declares conditions, action, slot, evidence and priority.</p></div>
+    <div><b>4 Resolve</b><p>Specific rules supersede general ones; conflicts such as rinse timing are settled by explicit constraints.</p></div>
+    <div><b>5 Budget</b><p>Rank by priority and trim to a time budget. Drops are listed, not hidden.</p></div>
+    <div><b>6 Explain</b><p>Every step carries its rule ID, text, source and reviewer.</p></div>
+  </div>
+
+  <div class="grid g2">
+    <pre><span class="c"># rules/implant/IM-001.yaml  (illustrative)</span>
+<span class="k">id</span>: IM-001
+<span class="k">version</span>: 3
+<span class="k">when</span>:
+  <span class="k">has_restoration</span>: [implant]
+<span class="k">action</span>:
+  <span class="k">slot</span>: evening
+  <span class="k">step</span>: interdental_brush
+  <span class="k">supersedes</span>: [IC-001]
+  <span class="k">priority</span>: <span class="s">high</span>
+<span class="k">evidence</span>: <span class="s">B</span>
+<span class="k">sources</span>: [<span class="s">"EFP S3 peri-implant 2023"</span>]
+<span class="k">reviewed_by</span>: <span class="s">"A. Rahman, DDS"</span>
+<span class="k">review_expires</span>: 2027-10
+<span class="k">escalate_if</span>: [bleeding_persists_14d, loose_implant]</pre>
+    <div class="grid" style="gap:10px">
+      <div class="card"><h3>Why not an LLM at the core</h3><p>It can't be signed off line by line, answers vary between runs, and a confident wrong answer about your implant is a patient-safety event. Use language models for wording and Q&amp;A only, constrained to the approved rule text.</p></div>
+      <div class="card"><h3>What makes it maintainable</h3><p>Rules as data in version control, a golden-profile test suite (every release re-runs 200 sample mouths), review expiry dates so stale advice fails loudly, and a clinician console to read and approve changes.</p></div>
+    </div>
+  </div>
+
+  <div class="intro" style="margin-top:12px"><h3>Try the engine</h3><p>Toggle a profile. The routine below is assembled by a small in-page version of the engine, using illustrative rules.</p></div>
+  <div class="demo">
+    <div class="toggles" id="toggles"></div>
+    <div class="out" id="out" aria-live="polite"></div>
+  </div>
+
+  <div class="intro" style="margin-top:20px"><h3>Clinician console (concept)</h3><p>The unseen half of the product, and the part that makes it trustworthy.</p></div>
+  <div class="console">
+    <div class="bar2"><span>RULES / IMPLANT / IM-001</span><span class="tag ok">Approved v3</span><span class="tag warn">Review expires in 11 months</span></div>
+    <div class="body">
+      <div><b style="font-family:var(--display);font-size:1.15rem">Clean between teeth with an interdental brush at the implant</b>
+        <p style="color:var(--muted);font-size:.9rem">Shown to users with an implant. Replaces generic floss advice (IC-001). Escalates if bleeding persists 14 days.</p>
+        <div class="test"><span>Golden profile: implant only</span><span class="ok">pass</span></div>
+        <div class="test"><span>Golden profile: implant + braces</span><span class="ok">pass</span></div>
+        <div class="test"><span>Conflict check vs. WF-001, FR-001</span><span class="ok">pass</span></div>
+        <div class="test"><span>Reading level ≤ grade 8</span><span class="ok">pass (6.9)</span></div>
+        <div class="test"><span>Fires for 3,412 of 48,100 sample profiles</span><span>7.1%</span></div></div>
+      <div><span class="eyebrow">Change history</span>
+        <div class="test"><span>v3 · A. Rahman</span><span>Oct 2026</span></div>
+        <div class="test"><span>v2 · Added water flosser link</span><span>Jul 2026</span></div>
+        <div class="test"><span>v1 · Initial</span><span>May 2026</span></div>
+        <span class="eyebrow" style="margin-top:8px">Reviewers (2 required for high-risk)</span>
+        <div class="test"><span>A. Rahman, periodontist</span><span class="ok">signed</span></div>
+        <div class="test"><span>L. Moreau, prosthodontist</span><span class="ok">signed</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="scope">
+  <div class="intro"><span class="eyebrow">Initial development scope</span><h2>Smallest thing that proves the routine is worth keeping.</h2></div>
+  <div class="grid g3 mnm">
+    <div class="card"><span class="tag ok">Build first</span><ul class="clean"><li><b>Intake</b> for adults: restorations, gum history, dry mouth, diabetes, cavity history</li><li><b>Safety gate</b> with stop screens</li><li><b>Rule engine</b> with about 40 reviewed rules, trace and explanations</li><li><b>Routine and Today</b> with reminders</li><li><b>Weekly gum check-in</b></li><li><b>Dentist summary</b> to share (PDF or link)</li></ul></div>
+    <div class="card"><span class="tag">Next</span><ul class="clean"><li>Clinician console and dentist confirmation code</li><li>Guided brushing with profile-aware cues</li><li>Product guidance (tool sizes, fluoride levels) without affiliate bias</li><li>Smart toothbrush data import</li><li>LLM rewording and constrained Q&amp;A</li></ul></div>
+    <div class="card"><span class="tag gum">Avoid</span><ul class="clean"><li>Diagnosis, or reading photos for disease</li><li>Streaks and points that punish gaps</li><li>Selling products inside the plan</li><li>Whitening, charcoal, oil pulling advice</li><li>Children's profiles until consent and dosing rules are designed</li></ul></div>
+  </div>
+  <div class="card"><h3>How we know it works</h3><p>Four-week plan adherence (3+ interdental nights a week), self-reported bleeding trend, share of users who book the dentist visit the app prompted, and the rate at which the safety gate stops someone who then sees a dentist. Not time in app.</p></div>
+</section>
+
+<section id="open">
+  <div class="intro"><span class="eyebrow">Before we build</span><h2>Risks, trade-offs and the decisions I need from you.</h2></div>
+  <div class="grid g2">
+    <div class="card"><span class="tag gum">Risks</span><ul class="clean">
+      <li><b>Clinical liability.</b> Advice to people with implants and conditions. Mitigate with sign-off, expiry, and tight "ask your dentist" wording; get legal review.</li>
+      <li><b>Regulation.</b> A tool that triages symptoms can edge into medical-device territory (FDA, UK MDR, EU MDR). Keep the gate narrow and non-diagnostic, and confirm early.</li>
+      <li><b>Privacy.</b> Health data (HIPAA, GDPR special category). Store the minimum, keep the profile on device where possible.</li>
+      <li><b>Guideline variation.</b> Countries disagree, for example on fluoride levels and floss evidence. Rules need a region tag.</li>
+      <li><b>Retention.</b> Habit apps decay. The plan: short routine, forgiving tracking, dentist-visit loop.</li></ul></div>
+    <div class="card"><span class="tag">Decisions needed</span>
+      <div class="q"><i>D1</i><div><b>Direction</b><p>Agree to C: self-serve with optional dentist confirmation?</p></div></div>
+      <div class="q"><i>D2</i><div><b>Clinical partners</b><p>Who are the two or three dentists (a periodontist, a prosthodontist, an orthodontist) who will own the rules?</p></div></div>
+      <div class="q"><i>D3</i><div><b>Market and region</b><p>One country first, so guidelines and regulation stay singular.</p></div></div>
+      <div class="q"><i>D4</i><div><b>Age scope</b><p>Adults 18+ only for v1, with children as a later product.</p></div></div>
+      <div class="q"><i>D5</i><div><b>Business model</b><p>Consumer subscription, dentist-paid, or free with clinic referral? It shapes the data model.</p></div></div></div>
+  </div>
+  <p style="color:var(--muted);font-size:.9rem">Unanswered: whether users trust an app over their own dentist's advice when the two disagree, how much of the intake people will complete honestly, and whether a dentist-linked flow can reach scale without an integration partner. Each is testable with a clickable prototype and ten interviews before the engine is built.</p>
+</section>
+
+<footer>Tend is a working concept for discussion. Clinical content shown is illustrative and has not been reviewed by a dentist; do not use it as advice.</footer>
+</div>
+
+<script>
+(function(){
+  var inputs=[
+    ['implant','Dental implant'],['bridge','Bridge'],['braces','Braces or aligners'],
+    ['bleeding','Gums bleed when cleaning'],['dry','Dry mouth (e.g. from medication)'],
+    ['cavity','Cavities in the last 3 years'],['diabetes','Diabetes'],['age65','Age 65 or older'],['breath','Bad breath concern']
+  ];
+  var redflags=[['rf','Swelling or pus near a tooth, or a loose tooth']];
+  var R=[
+    {id:'BR-001',slot:'Am + pm',t:'Brush for 2 minutes with fluoride toothpaste',d:'Twice a day, spit and do not rinse afterwards.',ev:'A',on:function(){return true}},
+    {id:'BR-002',slot:'Am + pm',t:'Use a soft brush with light pressure, angled at the gumline',d:'Gentler technique protects gums and restoration margins.',ev:'B',on:function(p){return p.implant||p.bleeding||p.bridge}},
+    {id:'IC-001',slot:'Pm',t:'Clean between teeth once a day',d:'Floss or small interdental brushes, whichever you can keep up.',ev:'A',on:function(){return true}},
+    {id:'IM-001',slot:'Pm',t:'Interdental brush at the implant, sized by your dentist',d:'Replaces general interdental advice. Clean around the implant daily.',ev:'B',sup:['IC-001'],on:function(p){return p.implant}},
+    {id:'BG-001',slot:'Pm',t:'Super floss or threader under the bridge',d:'Clean beneath the bridged tooth where a brush cannot reach.',ev:'B',sup:['IC-001'],on:function(p){return p.bridge&&!p.implant}},
+    {id:'OR-001',slot:'Am + pm',t:'Single-tuft and interdental brush around brackets and wires',d:'Replaces general interdental advice while appliances are in place.',ev:'B',sup:['IC-001'],on:function(p){return p.braces}},
+    {id:'WF-001',slot:'3x week',t:'Water flosser as an add-on',d:'Helpful around appliances and restorations. It does not replace interdental cleaning.',ev:'B',on:function(p){return p.braces||p.implant||p.bridge}},
+    {id:'FR-001',slot:'Pm',t:'Fluoride rinse, at a different time than brushing',d:'Use a 0.05% sodium fluoride rinse at least 30 minutes away from brushing, so toothpaste fluoride stays on teeth.',ev:'B',on:function(p){return p.braces||p.cavity||p.dry}},
+    {id:'DM-001',slot:'Daily',t:'Choose alcohol-free products; ask about saliva substitutes',d:'Alcohol rinses can worsen dryness. Sip water, ask your dentist or pharmacist about options.',ev:'C',on:function(p){return p.dry}},
+    {id:'GM-001',slot:'Check-in',t:'Keep cleaning where it bleeds, and re-check in 14 days',d:'Bleeding usually improves with better cleaning. If it persists, we will prompt a dentist visit.',ev:'Consensus',on:function(p){return p.bleeding}},
+    {id:'SY-001',slot:'Plan',t:'Dental check-up every 3 to 6 months',d:'Gum disease and blood sugar affect each other. Tell your dentist about your diabetes.',ev:'B',on:function(p){return p.diabetes}},
+    {id:'AG-001',slot:'Ask',t:'Consider a powered brush or thicker handle; ask about high-fluoride paste',d:'Helps if hands are stiff. Stronger paste for exposed root surfaces needs a prescription.',ev:'C',on:function(p){return p.age65}},
+    {id:'TN-001',slot:'Am',t:'Gentle tongue cleaning (optional)',d:'Modest effect on breath. If bad breath persists, we will suggest checking for gum or other causes.',ev:'C',on:function(p){return p.breath}}
+  ];
+  var p={},t=document.getElementById('toggles'),out=document.getElementById('out');
+  function mk(arr,cls){arr.forEach(function(x){var l=document.createElement('label');if(cls)l.className=cls;var i=document.createElement('input');i.type='checkbox';i.id='in-'+x[0];i.addEventListener('change',function(){p[x[0]]=i.checked;render()});l.appendChild(i);l.appendChild(document.createTextNode(x[1]));t.appendChild(l)})}
+  mk(inputs);mk(redflags,'rf');
+  function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+  function render(){
+    if(p.rf){
+      out.innerHTML='<div class="stop"><b>Routine paused. Please see a dentist.</b><span>Swelling, pus or a loose tooth can mean infection or implant failure. A cleaning routine will not fix it. If you also have a fever, spreading facial swelling or trouble swallowing or breathing, seek urgent medical care now.</span><span class="eyebrow">Fired: RF-001 · safety gate · evidence: consensus</span></div>';
+      return;
+    }
+    var fired=R.filter(function(r){return r.on(p)}),gone={};
+    fired.forEach(function(r){(r.sup||[]).forEach(function(s){gone[s]=r.id})});
+    var shown=fired.filter(function(r){return !gone[r.id]}),sup=fired.filter(function(r){return gone[r.id]});
+    var h='<h3>Your routine</h3>';
+    shown.forEach(function(r){h+='<div class="it"><span class="when">'+esc(r.slot)+'</span><div><b>'+esc(r.t)+'</b><span class="d">'+esc(r.d)+'</span></div><div class="meta"><span>'+r.id+'</span><span class="tag '+(r.ev==='A'?'ok':r.ev==='B'?'':'warn')+'">Evidence '+r.ev+'</span></div></div>'});
+    h+='<div class="cons"><span>'+shown.length+' items from '+fired.length+' matched rules.</span>';
+    sup.forEach(function(r){h+='<span>'+r.id+' replaced by '+gone[r.id]+'.</span>'});
+    h+='</div>';
+    out.innerHTML=h;
+  }
+  render();
+})();
+</script>

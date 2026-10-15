@@ -1,0 +1,27 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-15T12:00:00Z" },
+  "title": "Tend Artboard",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 1040, "title": "Today", "is_interactive": true },
+    "Routine.dc.html": { "x": 470, "y": 0, "w": 390, "h": 1040, "title": "Routine", "is_interactive": true },
+    "Progress.dc.html": { "x": 940, "y": 0, "w": 390, "h": 1040, "title": "Progress", "is_interactive": true },
+    "Mouth.dc.html": { "x": 1410, "y": 0, "w": 390, "h": 1040, "title": "My mouth", "is_interactive": true },
+    "Brushing.dc.html": { "x": 1880, "y": 0, "w": 390, "h": 844, "title": "Guided brushing" },
+    "Why.dc.html": { "x": 2350, "y": 0, "w": 390, "h": 844, "title": "Why this (sheet)" },
+    "Intake.dc.html": { "x": 0, "y": 1360, "w": 390, "h": 844, "title": "Set-up: your mouth" },
+    "Plan.dc.html": { "x": 470, "y": 1360, "w": 390, "h": 844, "title": "Set-up: your plan" },
+    "Safety.dc.html": { "x": 940, "y": 1360, "w": 390, "h": 844, "title": "Set-up: safety pause" },
+    "Palettes.dc.html": { "x": 0, "y": 2700, "w": 2240, "h": 900, "title": "Palette samples" }
+  },
+  "order": ["Main.dc.html", "Routine.dc.html", "Progress.dc.html", "Mouth.dc.html", "Brushing.dc.html", "Why.dc.html", "Intake.dc.html", "Plan.dc.html", "Safety.dc.html", "Palettes.dc.html"],
+  "notes": {
+    "t1": { "x": 0, "y": -250, "text": "Daily loop", "kind": "title1", "maxW": 2740 },
+    "t2": { "x": 0, "y": 1110, "text": "Set-up flow", "kind": "title1", "maxW": 1330 },
+    "t3": { "x": 0, "y": 2440, "text": "Palette samples", "kind": "title1", "maxW": 2240 },
+    "n1": { "x": 1410, "y": 1120, "w": 320, "text": "Every screen has two tweaks in the Tweaks panel: Night mode and Tile radius. Use them to compare light and night, and soft versus round corners. Tall screens show the full scroll length. Tab icons on the first four screens link to each other in Play.", "fill": "blue", "size": "s" }
+  },
+  "designSystems": []
+}
